@@ -1,0 +1,11 @@
+*.fastq
+*.bam
+*.bai
+*.sam
+*.log
+*.fasta
+*.fai
+*.tdf
+*.wig
+*.readme
+
