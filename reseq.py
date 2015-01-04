@@ -2,45 +2,64 @@
 
 import pysam
 import re
+import math
 
+bamFileName = "pass_bam/pass_reads_all_sorted_name.bam"
 pattern = re.compile("/[1|2]$")
 insertLength = []
 
 
-def apriBamFile(bamFileName):
+def apriBamFile():
     return pysam.AlignmentFile(bamFileName, "rb")
+
+
+def getIterator(iterable):
+    return iterable.__iter__()
+
+
+def prossimaRead(iterator):
+    return iterator.__next__()
+
+
+def prossimaCoppia(iterator):
+    prossimaRead(iterator)
+    return prossimaRead(iterator)
 
 
 def getQueryName(query):
     return re.sub(pattern, "", query.query_name)
 
 
-def comparaFile(file1, file2):
-    for read1 in file1:
-        print("before for 2")
-        print(read1.query_name)
-        for read2 in file2:
-            print("before if")
-            print(read2.query_name)
-            if getQueryName(read1) == getQueryName(read2):
-                insertLength.append(
-                    read1.reference_start - read2.reference_start)
-                print(insertLength[len(insertLength)-1])
-                break
-        print("after for 2")
-        print(read1.query_name)
-        print(read2.query_name)
-    print(read1.query_name)
-    print(read2.query_name)
+def calcolaInsertLength():
+    bamFile = apriBamFile()
+    mateFile = apriBamFile()
+    readIt = getIterator(bamFile)
+    mateIt = getIterator(mateFile)
+    alt = 0
+    terminato = False
+    while not terminato:
+        try:
+            read = prossimaRead(readIt)
+            readLength = read.reference_start + 1
+            mate = prossimaRead(mateIt)
+            mateLength = mate.reference_start + 1
+            if getQueryName(read) == getQueryName(mate):
+                insertLength.append(math.fabs(readLength - mateLength))
+                print("equal")
+                print(read.query_name, "\t", mate.query_name)
+                print(insertLength[len(insertLength) - 1])
+                read = prossimaCoppia(readIt)
+                mate = prossimaCoppia(mateIt)
+            else:
+                if alt % 2:
+                    read = prossimaRead(readIt)
+                else:
+                    mate = prossimaRead(mateIt)
+        except StopIteration:
+            terminato = True
+    bamFile.close()
+    mateFile.close()
+
 
 if __name__ == "__main__":
-    bamFileName1 = "pass_bam/pass_reads1_sorted_name.bam"
-    bamFileName2 = "pass_bam/pass_reads2_sorted_name.bam"
-
-    bamFile1 = apriBamFile(bamFileName1)
-    bamFile2 = apriBamFile(bamFileName2)
-
-    comparaFile(bamFile1, bamFile2)
-
-    bamFile1.close()
-    bamFile2.close()
+    calcolaInsertLength()
