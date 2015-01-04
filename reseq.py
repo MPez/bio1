@@ -4,62 +4,62 @@ import pysam
 import re
 import math
 
-bamFileName = "pass_bam/pass_reads_all_sorted_name.bam"
+bam_file_name = "pass_bam/pass_reads1_sorted_name.bam"
+mate_file_name = "pass_bam/pass_reads2_sorted_name.bam"
 pattern = re.compile("/[1|2]$")
-insertLength = []
+insert_length = []
 
 
-def apriBamFile():
-    return pysam.AlignmentFile(bamFileName, "rb")
+def apri_bam_file(name):
+    if name == "bam":
+        return pysam.AlignmentFile(bam_file_name, "rb")
+    else:
+        return pysam.AlignmentFile(mate_file_name, "rb")
 
 
-def getIterator(iterable):
+def get_iterator(iterable):
     return iterable.__iter__()
 
 
-def prossimaRead(iterator):
+def prossima_read(iterator):
     return iterator.__next__()
 
 
-def prossimaCoppia(iterator):
-    prossimaRead(iterator)
-    return prossimaRead(iterator)
-
-
-def getQueryName(query):
+def get_query_name(query):
     return re.sub(pattern, "", query.query_name)
 
 
-def calcolaInsertLength():
-    bamFile = apriBamFile()
-    mateFile = apriBamFile()
-    readIt = getIterator(bamFile)
-    mateIt = getIterator(mateFile)
+def calcola_insert_length():
+    bam_file = apri_bam_file("bam")
+    mate_file = apri_bam_file("mate")
+    read_it = get_iterator(bam_file)
+    mate_it = get_iterator(mate_file)
+    read = prossima_read(read_it)
+    mate = prossima_read(mate_it)
     alt = 0
     terminato = False
     while not terminato:
         try:
-            read = prossimaRead(readIt)
-            readLength = read.reference_start + 1
-            mate = prossimaRead(mateIt)
-            mateLength = mate.reference_start + 1
-            if getQueryName(read) == getQueryName(mate):
-                insertLength.append(math.fabs(readLength - mateLength))
+            read_length = read.reference_start + 1
+            mate_length = mate.reference_start + 1
+            if get_query_name(read) == get_query_name(mate):
+                insert_length.append(math.fabs(read_length - mate_length))
                 print("equal")
                 print(read.query_name, "\t", mate.query_name)
-                print(insertLength[len(insertLength) - 1])
-                read = prossimaCoppia(readIt)
-                mate = prossimaCoppia(mateIt)
+                print(insert_length[len(insert_length) - 1])
+                read = prossima_read(read_it)
+                mate = prossima_read(mate_it)
             else:
                 if alt % 2:
-                    read = prossimaRead(readIt)
+                    read = prossima_read(read_it)
                 else:
-                    mate = prossimaRead(mateIt)
+                    mate = prossima_read(mate_it)
+                alt += 1
         except StopIteration:
             terminato = True
-    bamFile.close()
-    mateFile.close()
+    bam_file.close()
+    mate_file.close()
 
 
 if __name__ == "__main__":
-    calcolaInsertLength()
+    calcola_insert_length()
