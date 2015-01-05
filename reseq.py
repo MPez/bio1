@@ -3,10 +3,10 @@
 import pysam
 import re
 import math
+import statistics
 
 bam_file_name1 = "pass_bam/pass_reads1_sorted_name.bam"
 bam_file_name2 = "pass_bam/pass_reads2_sorted_name.bam"
-insert_length = []
 
 
 def apri_bam_file(num):
@@ -16,7 +16,7 @@ def apri_bam_file(num):
         return pysam.AlignmentFile(bam_file_name2, "rb")
 
 
-def getQueryName(query):
+def get_query_name(query):
     qname_pattern = re.compile("/[1|2]$")
     return re.sub(qname_pattern, "", query.query_name)
 
@@ -39,40 +39,45 @@ def compara_qname(read_name, mate_name):
         return False
 
 
-def compara_file():
-    read_lette = 0
+def get_iterator(file):
+    return file.__iter__()
+
+
+def next_read(iterator):
+    return iterator.__next__()
+
+
+def compara():
+    print("comparazione bam file iniziata")
     bam_file = apri_bam_file(1)
-    for read in bam_file:
-        read_not_equal = 0
-        mate_file = apri_bam_file(2)
-        skip_read(mate_file, read_lette)
-        for mate in mate_file:
-            if getQueryName(read) == getQueryName(mate):
+    mate_file = apri_bam_file(2)
+    bam_it = get_iterator(bam_file)
+    mate_it = get_iterator(mate_file)
+    read = next_read(bam_it)
+    mate = next_read(mate_it)
+    insert_length = []
+    terminato = False
+    while not terminato:
+        try:
+            if get_query_name(read) == get_query_name(mate):
                 insert_length.append(math.fabs(
                     read.reference_start - mate.reference_start))
-                read_lette += 1
-                if read_not_equal > 0:
-                    read_lette += (read_not_equal)
-                    print("read_not_equal ", read_not_equal,
-                        "read_lette ", read_lette)
-                print("equal")
-                print(insert_length[len(insert_length) - 1])
-                print(read.query_name, "\t", mate.query_name)
-                break
+                read = next_read(bam_it)
+                mate = next_read(mate_it)
             else:
-                print("not equal")
-                print(read.query_name, "\t", mate.query_name)
                 if compara_qname(read.query_name, mate.query_name):
-                    if read_not_equal > 0:
-                        read_lette += (read_not_equal - 1)
-                        print("if", "read_lette", read_lette,
-                            "read_not_equal", read_not_equal)
-                    break
+                    read = next_read(bam_it)
                 else:
-                    read_not_equal += 1
-                    print("else", read_not_equal)
-        mate_file.close()
-    bam_file.close()
+                    mate = next_read(mate_it)
+        except StopIteration:
+            terminato = True
+    print("comparazione bam file completata")
+    print("sono stati rilevati", len(insert_length) - 1, "mate pair")
+    print("valori statistici sulla lunghezza degli inserti genomici")
+    print("media", statistics.mean(insert_length),
+          "mediana", statistics.median(insert_length),
+          "varianza", statistics.variance(insert_length),
+          "deviazione standard", statistics.stdev(insert_length))
 
 if __name__ == "__main__":
-    compara_file()
+    compara()
