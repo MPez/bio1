@@ -4,11 +4,11 @@ import pysam
 import re
 import math
 import statistics
-import sys
+from joblib import Parallel, delayed
 
 bam_file_name1 = "pass_bam/pass_reads1_sorted_name.bam"
 bam_file_name2 = "pass_bam/pass_reads2_sorted_name.bam"
-max_insert_length = sys.maxsize
+max_insert_length = 20000
 
 
 def apri_bam_file(num):
@@ -33,7 +33,7 @@ def get_query_name(query):
 def compara_qname(read_name, mate_name):
     """Compara le query name delle 2 read passate come argomento;
     ogni query name comprende le posizioni di entrambe le read:
-    se sono uguali corrispondono a 2 mate pair, altrimenti si deve 
+    se sono uguali corrispondono a 2 mate pair, altrimenti si deve
     controllare quale read è singola.
 
     Ritorna True nel caso read_name preceda mate_name;
@@ -58,45 +58,38 @@ def compara_qname(read_name, mate_name):
         #se la posizione della seconda read è minore nella prima query
         if read2_sub < mate2_sub:
             return True
-    #se la posizione della prima query o della seconda è minore nella seconda query
+    #se la posizione della prima o della seconda read
+    #è minore nella seconda query
     else:
         return False
 
 
-def get_iterator(file):
-    """Ritorna l'iteratore del file bam passato come argomento"""
-    return file.__iter__()
-
-
-def next_read(iterator):
-    """Avanza di una posizione l'iteratore passato come argomento"""
-    return iterator.__next__()
-
-
-def stampa_gnuplot(insert_list, discarded_list):
+def stampa_length(insert_list, discarded_list):
     """Crea e scrive file di testo relativi ai mate pair trovati e
     alla lunghezza degli inserti corrispondenti.
-
-    """
+    Tali file serviranno per essere usati con gnuplot."""
     insert_file = open("insert.txt", "w")
     discarded_insert_file = open("discarded_insert.txt", "w")
+    val = 0
     for (i, j) in insert_list:
-        insert_file.write(str(i) + "\t" + str(j) + "\n")
+        val += 1
+        insert_file.write(str(val) + "\t" + str(i) + "\t" + str(j) + "\n")
+    val = 0
     for (i, j) in discarded_list:
-        discarded_insert_file.write(str(i) + "\t" + str(j) + "\n")
+        val += 1
+        discarded_insert_file.write(str(val) + "\t" +
+                                    str(i) + "\t" + str(j) + "\n")
     insert_file.close()
     discarded_insert_file.close()
 
 
 def stampa_messaggi(mess, insert=0, discarded=0):
     """Stampa messaggi di testo per l'utente con informazioni
-    sull'avanzamento e sulle statistiche ottenute.
-
-    """
-    if mess == "inizio":
-        print("comparazione bam file iniziata")
-    elif mess == "fine":
-        print("comparazione bam file completata")
+    sull'avanzamento e sulle statistiche ottenute."""
+    if mess == "inizio lenght":
+        print("calcolo lunghezza inserti iniziato")
+    elif mess == "fine length":
+        print("calcolo lunghezza inserti terminato")
         print("preparazione file input per gnuplot")
     elif mess == "stat":
         print("sono stati rilevati", len(insert), "mate pair")
@@ -107,24 +100,26 @@ def stampa_messaggi(mess, insert=0, discarded=0):
               "mediana", statistics.median(j for (i, j) in insert),
               "varianza", statistics.variance(j for (i, j) in insert),
               "deviazione standard", statistics.stdev(j for (i, j) in insert))
+    elif mess == "inizio multiple":
+        print("calcolo read multiple iniziato")
+    elif mess == "fine multiple":
+        print("calcolo read multiple terminato")
 
 
-def compara():
+def calcola_isert_length():
     """Compara le read dei 2 file sam in esame trovando i mate pair:
     i mate pair posseggono la stessa query name a meno dei 2 caratteri finali
-    che identificano il file bam di provenienza.
-
-    """
-    stampa_messaggi("inizio")
+    che identificano il file bam di provenienza."""
+    stampa_messaggi("inizio lenght")
     #apertura file bam
     bam_file = apri_bam_file(1)
     mate_file = apri_bam_file(2)
     #creazione iteratori
-    bam_it = get_iterator(bam_file)
-    mate_it = get_iterator(mate_file)
+    bam_it = iter(bam_file)
+    mate_it = iter(mate_file)
     #riferimenti alle prime read dei file
-    read = next_read(bam_it)
-    mate = next_read(mate_it)
+    read = next(bam_it)
+    mate = next(mate_it)
     #lista di tuple contenenti nome read e lunghezza inserti
     insert_length = []
     discarded_insert_length = []
@@ -135,27 +130,58 @@ def compara():
             #se le query name coincidono le read sono mate pair
             if get_query_name(read) == get_query_name(mate):
                 length = math.fabs(read.reference_start - mate.reference_start)
+                #vengono scartati gli inserti con lunghezze fuori range
                 if length < max_insert_length:
                     insert_length.append((get_query_name(read), length))
                 else:
                     discarded_insert_length.append(
                         (get_query_name(read), length))
                 #avanzano entrambi gli iteratori dei file bam
-                read = next_read(bam_it)
-                mate = next_read(mate_it)
+                read = next(bam_it)
+                mate = next(mate_it)
             #se la prima query precede la seconda,
             #è singola e deve essere saltata
             elif compara_qname(read.query_name, mate.query_name):
-                read = next_read(bam_it)
+                read = next(bam_it)
             #se la seconda query precede la prima,
             #è singola e deve essere saltata
             else:
-                mate = next_read(mate_it)
+                mate = next(mate_it)
         except StopIteration:
             terminato = True
-    stampa_messaggi("fine")
-    stampa_gnuplot(insert_length, discarded_insert_length)
+    stampa_messaggi("fine lenght")
+    stampa_length(insert_length, discarded_insert_length)
     stampa_messaggi("stat", insert_length, discarded_insert_length)
 
+
+def stampa_multiple(multiple_read):
+    multiple_file = open("multiple_read.txt", "w")
+    for (seq, name) in multiple_read:
+        multiple_file.write(seq, "\t", name, "\n")
+    multiple_file.close()
+
+
+def cerca_query(num, read, multiple_read):
+    seq = read.query_sequence
+    bam_file1 = apri_bam_file(num)
+    for read1 in bam_file1:
+        if seq == read1.query_sequence:
+            multiple_read.append((seq, read1.query_name))
+    bam_file1.close()
+
+
+def conta_multiple_read(num):
+    stampa_messaggi("inizio multiple")
+    multiple_read = []
+    bam_file = apri_bam_file(num)
+    Parallel(n_jobs=4)
+    (delayed(cerca_query(num, read, multiple_read)) for read in bam_file)
+    bam_file.close()
+    stampa_multiple(multiple_read)
+    stampa_messaggi("fine multiple")
+
+
 if __name__ == "__main__":
-    compara()
+    #calcola_isert_length()
+    conta_multiple_read(1)
+    #conta_multiple_read(2)
