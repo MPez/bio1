@@ -4,7 +4,7 @@ import pysam
 import re
 import math
 import statistics
-from joblib import Parallel, delayed
+from multiprocessing import Pool
 
 bam_file_name1 = "pass_bam/pass_reads1_sorted_name.bam"
 bam_file_name2 = "pass_bam/pass_reads2_sorted_name.bam"
@@ -83,6 +83,17 @@ def stampa_length(insert_list, discarded_list):
     discarded_insert_file.close()
 
 
+def stampa_unique(unique_read, bam_file):
+    """Crea e stampa un sam file dove vengono scritte le unique read trovate.
+    """
+    unique_file = pysam.AlignmentFile("unique_reads.sam", "w",
+                                      referencenames=bam_file.references,
+                                      referencelengths=bam_file.lengths)
+    for read in unique_read:
+        unique_file.write(read)
+    unique_file.close()
+
+
 def stampa_messaggi(mess, insert=0, discarded=0):
     """Stampa messaggi di testo per l'utente con informazioni
     sull'avanzamento e sulle statistiche ottenute."""
@@ -120,9 +131,14 @@ def calcola_isert_length():
     #riferimenti alle prime read dei file
     read = next(bam_it)
     mate = next(mate_it)
-    #lista di tuple contenenti nome read e lunghezza inserti
+    #riferimento alla read precedente
+    #previous_read = None
+    #liste di tuple contenenti nome read e lunghezza inserti
     insert_length = []
     discarded_insert_length = []
+    #liste contenenti le read uniche e multiple trovate
+    unique_read = []
+    #multiple_read = []
     #variabile di controllo ciclo
     terminato = False
     while not terminato:
@@ -136,52 +152,63 @@ def calcola_isert_length():
                 else:
                     discarded_insert_length.append(
                         (get_query_name(read), length))
+                #viene aggiornata la read precedente che ha trovato il mate
+                #previous_read = read
                 #avanzano entrambi gli iteratori dei file bam
                 read = next(bam_it)
                 mate = next(mate_it)
             #se la prima query precede la seconda,
             #è singola e deve essere saltata
             elif compara_qname(read.query_name, mate.query_name):
+                unique_read.append(read)
                 read = next(bam_it)
             #se la seconda query precede la prima,
             #è singola e deve essere saltata
             else:
+                unique_read.append(mate)
                 mate = next(mate_it)
         except StopIteration:
             terminato = True
     stampa_messaggi("fine lenght")
     stampa_length(insert_length, discarded_insert_length)
+    stampa_unique(unique_read, bam_file)
     stampa_messaggi("stat", insert_length, discarded_insert_length)
+    bam_file.close()
+    mate_file.close()
 
 
 def stampa_multiple(multiple_read):
     multiple_file = open("multiple_read.txt", "w")
     for (seq, name) in multiple_read:
-        multiple_file.write(seq, "\t", name, "\n")
+        multiple_file.write(seq + "\t" + name + "\n")
     multiple_file.close()
 
 
-def cerca_query(num, read, multiple_read):
+def cerca_query(read, num):
+    multiple_read = []
     seq = read.query_sequence
     bam_file1 = apri_bam_file(num)
     for read1 in bam_file1:
-        if seq == read1.query_sequence:
+        if seq == read1.query_sequence and read.query_name != read1.query_name:
             multiple_read.append((seq, read1.query_name))
     bam_file1.close()
+    return multiple_read
 
 
 def conta_multiple_read(num):
     stampa_messaggi("inizio multiple")
     multiple_read = []
     bam_file = apri_bam_file(num)
-    Parallel(n_jobs=4)
-    (delayed(cerca_query(num, read, multiple_read)) for read in bam_file)
+    pass
     bam_file.close()
-    stampa_multiple(multiple_read)
+    if len(multiple_read) > 0:
+        stampa_multiple(multiple_read)
+    else:
+        print("non sono state trovate read multiple")
     stampa_messaggi("fine multiple")
 
 
 if __name__ == "__main__":
-    #calcola_isert_length()
-    conta_multiple_read(1)
+    calcola_isert_length()
+    #conta_multiple_read(1)
     #conta_multiple_read(2)
