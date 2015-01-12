@@ -4,21 +4,23 @@ import pysam
 import re
 import math
 import statistics
-from multiprocessing import Pool
 
 bam_file_name1 = "pass_bam/pass_reads1_sorted_name.bam"
 bam_file_name2 = "pass_bam/pass_reads2_sorted_name.bam"
+bam_file_all = "pass_bam/pass_reads_all_sorted_name.bam"
 max_insert_length = 20000
 
 
-def apri_bam_file(num):
+def apri_bam_file(name):
     """Apre il file bam desiderato in base all'indice passato come argomento.
 
     Ritorna l'oggetto che corrisponde al file bam."""
-    if num == 1:
+    if name == 1:
         return pysam.AlignmentFile(bam_file_name1, "rb")
-    else:
+    elif name == 2:
         return pysam.AlignmentFile(bam_file_name2, "rb")
+    elif name == "all":
+        return pysam.AlignmentFile(bam_file_all, "rb")
 
 
 def get_query_name(query):
@@ -83,15 +85,15 @@ def stampa_length(insert_list, discarded_list):
     discarded_insert_file.close()
 
 
-def stampa_unique(unique_read, bam_file):
+def stampa_single(single_read, bam_file):
     """Crea e stampa un sam file dove vengono scritte le unique read trovate.
     """
-    unique_file = pysam.AlignmentFile("unique_reads.sam", "w",
+    single_file = pysam.AlignmentFile("single_reads.sam", "w",
                                       referencenames=bam_file.references,
                                       referencelengths=bam_file.lengths)
-    for read in unique_read:
-        unique_file.write(read)
-    unique_file.close()
+    for read in single_read:
+        single_file.write(read)
+    single_file.close()
 
 
 def stampa_messaggi(mess, insert=0, discarded=0):
@@ -137,7 +139,7 @@ def calcola_isert_length():
     insert_length = []
     discarded_insert_length = []
     #liste contenenti le read uniche e multiple trovate
-    unique_read = []
+    single_read = []
     #multiple_read = []
     #variabile di controllo ciclo
     terminato = False
@@ -160,55 +162,76 @@ def calcola_isert_length():
             #se la prima query precede la seconda,
             #è singola e deve essere saltata
             elif compara_qname(read.query_name, mate.query_name):
-                unique_read.append(read)
+                single_read.append(read)
                 read = next(bam_it)
             #se la seconda query precede la prima,
             #è singola e deve essere saltata
             else:
-                unique_read.append(mate)
+                single_read.append(mate)
                 mate = next(mate_it)
         except StopIteration:
             terminato = True
     stampa_messaggi("fine lenght")
     stampa_length(insert_length, discarded_insert_length)
-    stampa_unique(unique_read, bam_file)
+    stampa_single(single_read, bam_file)
     stampa_messaggi("stat", insert_length, discarded_insert_length)
     bam_file.close()
     mate_file.close()
 
 
-def stampa_multiple(multiple_read):
-    multiple_file = open("multiple_read.txt", "w")
-    for (seq, name) in multiple_read:
-        multiple_file.write(seq + "\t" + name + "\n")
-    multiple_file.close()
+def stampa_read(read_list, bam_file, nome_file):
+    """Crea e stampa un sam file dove vengono scritte le read trovate.
+    """
+    new_file = pysam.AlignmentFile(nome_file, "w",
+                                   referencenames=bam_file.references,
+                                   referencelengths=bam_file.lengths)
+    for read in read_list:
+        new_file.write(read)
+    new_file.close()
 
 
-def cerca_query(read, num):
+def esamina_bam():
+    stampa_messaggi("inizio esamina")
+    bam_file = apri_bam_file("all")
+    bam_it = iter(bam_file)
+    prev_read = None
+    read = next(bam_it)
+    single_read = []
+    unique_read = []
     multiple_read = []
-    seq = read.query_sequence
-    bam_file1 = apri_bam_file(num)
-    for read1 in bam_file1:
-        if seq == read1.query_sequence and read.query_name != read1.query_name:
-            multiple_read.append((seq, read1.query_name))
-    bam_file1.close()
-    return multiple_read
-
-
-def conta_multiple_read(num):
-    stampa_messaggi("inizio multiple")
-    multiple_read = []
-    bam_file = apri_bam_file(num)
-    pass
+    terminato = False
+    count = 0
+    equal_reads = []
+    while not terminato:
+        try:
+            prev_read = read
+            read = next(bam_it)
+            if get_query_name(prev_read) == get_query_name(read):
+                count += 1
+                equal_reads.append(prev_read)
+            else:
+                if count == 0:
+                    single_read.append(prev_read)
+                elif count == 1:
+                    unique_read.append(equal_reads[0])
+                    unique_read.append(prev_read)
+                    count = 0
+                    equal_reads.clear()
+                else:
+                    for r in equal_reads:
+                        multiple_read.append(r)
+                    multiple_read.append(prev_read)
+                    count = 0
+                    equal_reads.clear()
+        except StopIteration:
+            terminato = True
+    stampa_read(single_read, bam_file, "single_reads.sam")
+    stampa_read(unique_read, bam_file, "unique_reads.sam")
+    stampa_read(multiple_read, bam_file, "multiple_reads.sam")
     bam_file.close()
-    if len(multiple_read) > 0:
-        stampa_multiple(multiple_read)
-    else:
-        print("non sono state trovate read multiple")
-    stampa_messaggi("fine multiple")
-
+    stampa_messaggi("fine esamina")
 
 if __name__ == "__main__":
-    calcola_isert_length()
-    #conta_multiple_read(1)
-    #conta_multiple_read(2)
+    #calcola_isert_length()
+    #conta_multiple_read("all")
+    esamina_bam()
