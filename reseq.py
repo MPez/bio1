@@ -117,9 +117,19 @@ def stampa_messaggi(mess, insert=0, discarded=0):
         print("calcolo read multiple iniziato")
     elif mess == "fine multiple":
         print("calcolo read multiple terminato")
+    elif mess == "inizio esamina":
+        print("analisi bam file per ricerca single, unique e multiple\
+              reads iniziata")
+    elif mess == "fine esamina":
+        print("analisi bam file terminata")
+    elif mess == "inizio stampa file":
+        print("creazione sam file con signle, unique e multiple reads\
+              iniziata")
+    elif mess == "fine stampa file":
+        print("creazione sam file terminata")
 
 
-def calcola_isert_length():
+def calcola_insert_length():
     """Compara le read dei 2 file sam in esame trovando i mate pair:
     i mate pair posseggono la stessa query name a meno dei 2 caratteri finali
     che identificano il file bam di provenienza."""
@@ -179,59 +189,6 @@ def calcola_isert_length():
     mate_file.close()
 
 
-def stampa_read(read_list, bam_file, nome_file):
-    """Crea e stampa un sam file dove vengono scritte le read trovate.
-    """
-    new_file = pysam.AlignmentFile(nome_file, "w",
-                                   referencenames=bam_file.references,
-                                   referencelengths=bam_file.lengths)
-    for read in read_list:
-        new_file.write(read)
-    new_file.close()
-
-
-def esamina_bam():
-    stampa_messaggi("inizio esamina")
-    bam_file = apri_bam_file("all")
-    bam_it = iter(bam_file)
-    prev_read = None
-    read = next(bam_it)
-    single_read = []
-    unique_read = []
-    multiple_read = []
-    terminato = False
-    count = 0
-    equal_reads = []
-    while not terminato:
-        try:
-            prev_read = read
-            read = next(bam_it)
-            if get_query_name(prev_read) == get_query_name(read):
-                count += 1
-                equal_reads.append(prev_read)
-            else:
-                if count == 0:
-                    single_read.append(prev_read)
-                elif count == 1:
-                    unique_read.append(equal_reads[0])
-                    unique_read.append(prev_read)
-                    count = 0
-                    equal_reads.clear()
-                else:
-                    for r in equal_reads:
-                        multiple_read.append(r)
-                    multiple_read.append(prev_read)
-                    count = 0
-                    equal_reads.clear()
-        except StopIteration:
-            terminato = True
-    stampa_read(single_read, bam_file, "single_reads.sam")
-    stampa_read(unique_read, bam_file, "unique_reads.sam")
-    stampa_read(multiple_read, bam_file, "multiple_reads.sam")
-    bam_file.close()
-    stampa_messaggi("fine esamina")
-
 if __name__ == "__main__":
-    #calcola_isert_length()
+    #calcola_insert_length()
     #conta_multiple_read("all")
-    esamina_bam()
