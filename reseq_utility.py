@@ -4,6 +4,7 @@
 import pysam
 import re
 
+#riferimenti ai nomi dei file bam
 bam_file_name1 = "pass_bam/pass_reads1_sorted_name.bam"
 bam_file_name2 = "pass_bam/pass_reads2_sorted_name.bam"
 bam_file_all = "pass_bam/pass_reads_all_sorted_name.bam"

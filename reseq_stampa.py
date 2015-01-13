@@ -22,10 +22,6 @@ def stampa_messaggi(mess, insert=0, discarded=0):
               "mediana", statistics.median(j for (i, j) in insert),
               "varianza", statistics.variance(j for (i, j) in insert),
               "deviazione standard", statistics.stdev(j for (i, j) in insert))
-    elif mess == "inizio multiple":
-        print("calcolo read multiple iniziato")
-    elif mess == "fine multiple":
-        print("calcolo read multiple terminato")
     elif mess == "inizio esamina":
         print("analisi bam file per ricerca single, unique e multiple\
               reads iniziata")
