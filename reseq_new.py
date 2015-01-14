@@ -11,7 +11,7 @@ max_insert_length = 20000
 
 def esamina_bam():
     """Esamina il file bam per ricercare le single, unique e multiple
-    read presenti; una volta trovate, le stampa su file sam."""
+    read presenti; una volta trovate, le stampa su file bam."""
     stampa_messaggi("inizio esamina")
     #apertura bam file
     bam_file = apri_bam_file("all")
@@ -21,7 +21,9 @@ def esamina_bam():
     prev_read = None
     read = next(bam_it)
     #riferimenti alle liste relative alle single, unique e multiple read
-    single_reads = unique_reads = multiple_reads = []
+    single_reads = []
+    unique_reads = []
+    multiple_reads = []
     #riferimento alla lista dove vengono salvate le read uguali trovate
     equal_reads = []
     #variabile di controllo del ciclo
@@ -90,6 +92,20 @@ def calcola_insert_length():
     unique_file.close()
 
 
+def calcola_coverage(read_type):
+    bam_file = apri_bam_file(read_type)
+    region_number = bam_file.nreferences
+    region_name = bam_file.references[region_number-1]
+    region_length = bam_file.lengths[region_number-1]
+    coverage = []
+    for col in bam_file.pileup(region_name, 0, region_length-1):
+        coverage.append((col.pos, col.n))
+    stampa_coverage(coverage, read_type, region_name)
+    bam_file.close()
+
 if __name__ == "__main__":
-    esamina_bam()
-    calcola_insert_length()
+    #esamina_bam()
+    #calcola_insert_length()
+    calcola_coverage("unique_sorted")
+    calcola_coverage("single_sorted")
+    calcola_coverage("multiple_sorted")

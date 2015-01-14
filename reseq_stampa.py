@@ -55,3 +55,11 @@ def stampa_length(read_list, nome_file):
         read_file.write(str(val) + "\t" + str(nome) + "\t"
                         + str(length) + "\n")
     read_file.close()
+
+
+def stampa_coverage(coverage, file_name, region_name):
+    new_file = open(file_name + ".wig", "w")
+    new_file.write("variableStep chrom=" + region_name + "\n")
+    for (pos, n) in coverage:
+        new_file.write(str(pos) + "\t" + str(n) + "\n")
+    new_file.close()
