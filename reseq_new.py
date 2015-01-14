@@ -56,52 +56,40 @@ def esamina_bam():
             terminato = True
     stampa_messaggi("fine esamina")
     stampa_messaggi("inizio stampa file")
-    stampa_read(single_reads, bam_file, "single_reads.sam")
-    stampa_read(unique_reads, bam_file, "unique_reads.sam")
-    stampa_read(multiple_reads, bam_file, "multiple_reads.sam")
-    bam_file.close()
-    stampa_messaggi("fine stampa file")
-
-
-def esamina_bam_dict():
-    """Esamina il file bam per ricercare le single, unique e multiple
-    read presenti; una volta trovate, le stampa su file sam."""
-    stampa_messaggi("inizio esamina")
-    #apertura bam file
-    bam_file = apri_bam_file("all")
-    #dizionario dove mappare le read uguali
-    read_dict = dict()
-    #riferimenti alle liste relative alle single, unique e multiple read
-    single_reads = unique_reads = multiple_reads = []
-    for read in bam_file:
-        name = get_query_name(read)
-        if not name in read_dict:
-            read_dict[name] = []
-        read_dict[name].append(read)
-        print(read_dict)
-    for key, read_list in read_dict.items():
-        if len(read_dict[key]) == 1:
-            single_reads.append(read_list[0])
-        elif len(read_dict[key]) == 2:
-            unique_reads.append(read_list[0])
-            unique_reads.append(read_list[1])
-        else:
-            for read in read_list:
-                multiple_reads.append(read)
-    stampa_messaggi("fine esamina")
-    stampa_messaggi("inizio stampa file")
-    stampa_read(single_reads, bam_file, "single_reads_dict.sam")
-    stampa_read(unique_reads, bam_file, "unique_reads_dict.sam")
-    stampa_read(multiple_reads, bam_file, "multiple_reads_dict.sam")
+    stampa_read(single_reads, bam_file, "single_reads")
+    stampa_read(unique_reads, bam_file, "unique_reads")
+    stampa_read(multiple_reads, bam_file, "multiple_reads")
     bam_file.close()
     stampa_messaggi("fine stampa file")
 
 
 def calcola_insert_length():
-    pass
+    stampa_messaggi("inizio length")
+    unique_file = apri_bam_file("unique")
+    unique_it = iter(unique_file)
+    read = next(unique_it)
+    mate = next(unique_it)
+    insert_length = []
+    discarded_insert_length = []
+    terminato = False
+    while not terminato:
+        try:
+            length = math.fabs(read.reference_start - mate.reference_start)
+            if length < max_insert_length:
+                insert_length.append((get_query_name(read), length))
+            else:
+                discarded_insert_length.append((get_query_name(read), length))
+            read = next(unique_it)
+            mate = next(unique_it)
+        except StopIteration:
+            terminato = True
+    stampa_messaggi("fine length")
+    stampa_length(insert_length, "insert_length.txt")
+    stampa_length(discarded_insert_length, "discarded_insert_length.txt")
+    stampa_messaggi("stat", insert_length, discarded_insert_length)
+    unique_file.close()
 
 
 if __name__ == "__main__":
-    #esamina_bam()
-    esamina_bam_dict()
-    #calcola_insert_length()
+    esamina_bam()
+    calcola_insert_length()

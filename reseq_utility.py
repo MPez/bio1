@@ -8,6 +8,9 @@ import re
 bam_file_name1 = "pass_bam/pass_reads1_sorted_name.bam"
 bam_file_name2 = "pass_bam/pass_reads2_sorted_name.bam"
 bam_file_all = "pass_bam/pass_reads_all_sorted_name.bam"
+unique_file = "unique_reads.bam"
+single_file = "single_reads.bam"
+multiple_file = "multiple_reads.bam"
 
 
 def apri_bam_file(name):
@@ -20,6 +23,12 @@ def apri_bam_file(name):
         return pysam.AlignmentFile(bam_file_name2, "rb")
     elif name == "all":
         return pysam.AlignmentFile(bam_file_all, "rb")
+    elif name == "single":
+        return pysam.AlignmentFile(single_file, "rb")
+    elif name == "unique":
+        return pysam.AlignmentFile(unique_file, "rb")
+    elif name == "multiple":
+        return pysam.AlignmentFile(multiple_file, "rb")
 
 
 def get_query_name(query):
