@@ -11,41 +11,30 @@ max_insert_length = 20000
 
 def esamina_multiple(multiple_list, mate_list, single_list):
     for i in range(0, len(multiple_list)):
+        trovato = False
         read = multiple_list[i]
-        print(read.query_name)
         for j in range(i+1, len(multiple_list)):
-            mate = multiple_list[j]
-            print(mate.query_name)
-            if read.is_reverse and not mate.is_reverse:
-                print("read reverse mate not reverse")
-                if find_number(read) and not find_number(mate):
-                    print("read secondary mate not secondary")
-                    mate_list.append(read)
-                    mate_list.append(mate)
-                else:
-                    if not find_number(read) and find_number(mate):
-                        print("read not secondary mate secondary")
-                        mate_list.append(read)
-                        mate_list.append(mate)
-                    else:
-                        print("mate single")
-                        single_list.append(mate)
-            else:
-                if not read.is_reverse and mate.is_reverse:
-                    print("read not reverse mate reverse")
+            if not trovato:
+                mate = multiple_list[j]
+                if read.is_reverse and not mate.is_reverse:
                     if find_number(read) and not find_number(mate):
-                        print("read secondary mate not secondary")
                         mate_list.append(read)
                         mate_list.append(mate)
+                        trovato = True
                     elif not find_number(read) and find_number(mate):
-                        print("read secondary mate not secondary")
                         mate_list.append(read)
                         mate_list.append(mate)
-                    else:
-                        print("mate single")
-                        single_list.append(mate)
-        if read not in mate_list:
-            print("read single")
+                        trovato = True
+                elif not read.is_reverse and mate.is_reverse:
+                    if find_number(read) and not find_number(mate):
+                        mate_list.append(read)
+                        mate_list.append(mate)
+                        trovato = True
+                    elif not find_number(read) and find_number(mate):
+                        mate_list.append(read)
+                        mate_list.append(mate)
+                        trovato = True
+        if j == len(multiple_list) - 1 and read not in mate_list:
             single_list.append(read)
 
 
@@ -94,13 +83,28 @@ def esamina_bam():
                     equal_reads.append(prev_read)
                     for r in equal_reads:
                         multiple_reads.append(r)
-                    count = 0
                     esamina_multiple(equal_reads,
                                      multiple_mate_reads,
                                      multiple_single_reads)
                     equal_reads.clear()
+                    count = 0
         except StopIteration:
             terminato = True
+            if len(equal_reads) > 0:
+                if count == 0:
+                    single_reads.append(prev_read)
+                elif count == 1:
+                    unique_reads.append(equal_reads.pop())
+                    unique_reads.append(prev_read)
+                    count = 0
+                else:
+                    equal_reads.append(prev_read)
+                    for r in equal_reads:
+                        multiple_reads.append(r)
+                    esamina_multiple(equal_reads,
+                                     multiple_mate_reads,
+                                     multiple_single_reads)
+                    equal_reads.clear()
     stampa_messaggi("fine esamina")
     stampa_messaggi("inizio stampa file")
     stampa_read(single_reads, bam_file, "single_reads")
