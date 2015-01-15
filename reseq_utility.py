@@ -47,3 +47,11 @@ def get_query_name(query):
     il file di provenienza."""
     qname_pattern = re.compile("/[1|2]$")
     return re.sub(qname_pattern, "", query.query_name)
+
+
+def find_number(read):
+    one = re.compile("/1$")
+    if re.search(one, read.query_name):
+        return True
+    else:
+        return False
