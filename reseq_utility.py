@@ -50,6 +50,10 @@ def get_query_name(query):
 
 
 def find_number(read):
+    """Cerca se la read passata come argomento appartiene al primo
+    file pass o al secondo fornito.
+
+    Ritorna true se appartiene al secondo e false al primo."""
     one = re.compile("/1$")
     if re.search(one, read.query_name):
         return True

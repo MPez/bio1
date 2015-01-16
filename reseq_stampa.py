@@ -3,9 +3,10 @@
 
 import pysam
 import statistics
+import re
 
 
-def stampa_messaggi(mess, insert=0, discarded=0):
+def stampa_messaggi(mess, insert=0, discarded=0, read_type=0):
     """Stampa messaggi di testo per l'utente con informazioni
     sull'avanzamento e sulle statistiche ottenute."""
     if mess == "inizio lenght":
@@ -32,6 +33,19 @@ def stampa_messaggi(mess, insert=0, discarded=0):
               "unique e multiple reads iniziata")
     elif mess == "fine stampa file":
         print("creazione bam file terminata")
+    elif mess == "inizio coverage":
+        name = re.sub(re.compile("_[a-z]+$"), "", read_type)
+        print("calcolo sequence coverage per %s read" % (name))
+    elif mess == "fine coverage":
+        print("calcolo sequence coverage termianto")
+    elif mess == "inizio physical":
+        print("calcola physical coverage iniziato")
+    elif mess == "fine physical":
+        print("calcolo physical coverage terminato")
+    elif mess == "inizio stampa wiggle":
+        print("creazione file wiggle iniziata")
+    elif mess == "fine stampa wiggle":
+        print("creazione file wiggle terminata")
 
 
 def stampa_read(read_list, bam_file, nome_file):
@@ -58,7 +72,9 @@ def stampa_length(read_list, nome_file):
 
 
 def stampa_coverage(coverage, file_name, region_name):
-    new_file = open(file_name + ".wig", "w")
+    """Crea e scrive un file wiggle relativo alla coverage calcolata.
+    """
+    new_file = open(file_name + "_coverage.wig", "w")
     new_file.write("variableStep chrom=" + region_name + "\n")
     for (pos, n) in coverage:
         new_file.write(str(pos) + "\t" + str(n) + "\n")

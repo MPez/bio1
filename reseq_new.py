@@ -117,6 +117,9 @@ def esamina_bam():
 
 
 def calcola_insert_length():
+    """Calcola la lunghezza degli inserti composti dagli unique mate pair;
+    li filtra se sono fuori range massimo e li stampa su due file separati.
+    """
     stampa_messaggi("inizio length")
     unique_file = apri_bam_file("unique")
     unique_it = iter(unique_file)
@@ -144,19 +147,60 @@ def calcola_insert_length():
 
 
 def calcola_coverage(read_type):
+    """Calcola la sequence coverage del tipo di read richiesto e la stampa
+    su un file wiggle."""
+    stampa_messaggi("inizio coverage", read_type=read_type)
     bam_file = apri_bam_file(read_type)
     region_number = bam_file.nreferences
-    region_name = bam_file.references[region_number-1]
-    region_length = bam_file.lengths[region_number-1]
+    region_name = bam_file.references[region_number - 1]
+    region_length = bam_file.lengths[region_number - 1]
     coverage = []
-    for col in bam_file.pileup(region_name, 0, region_length-1):
-        coverage.append((col.pos, col.n))
+    for col in bam_file.pileup(region_name, 0, region_length - 1):
+        coverage.append((col.reference_pos, col.nsegments))
+    stampa_messaggi("fine coverage")
+    stampa_messaggi("inizio stampa wiggle")
     stampa_coverage(coverage, read_type, region_name)
+    stampa_messaggi("fine stampa wiggle")
+    bam_file.close()
+
+
+def calcola_physical_coverage():
+    """Calcola la physical coverage dagli unique mate pair e la stampa
+    su un fie wiggle."""
+    stampa_messaggi("inizio physical")
+    bam_file = apri_bam_file("unique")
+    bam_iter = iter(bam_file)
+    read = next(bam_iter)
+    mate = next(bam_iter)
+    region_number = bam_file.nreferences
+    region_name = bam_file.references[region_number - 1]
+    region_length = bam_file.lengths[region_number - 1]
+    coverage = [[pos, 0] for pos in range(1, region_length + 1)]
+    terminato = False
+    while not terminato:
+        try:
+            read_pos = read.reference_start
+            mate_pos = mate.reference_start
+            if read_pos < mate_pos:
+                for i in range(read_pos, mate_pos + mate.reference_length):
+                    coverage[i][1] += 1
+            else:
+                for i in range(mate_pos, read_pos + read.reference_length):
+                    coverage[i][1] += 1
+            read = next(bam_iter)
+            mate = next(bam_iter)
+        except StopIteration:
+            terminato = True
+    stampa_messaggi("fine physical")
+    stampa_messaggi("inizio stampa wiggle")
+    stampa_coverage(coverage, "unique_physical", region_name)
+    stampa_messaggi("fine stampa wiggle")
     bam_file.close()
 
 if __name__ == "__main__":
-    esamina_bam()
+    #esamina_bam()
     #calcola_insert_length()
     #calcola_coverage("unique_sorted")
     #calcola_coverage("single_sorted")
     #calcola_coverage("multiple_sorted")
+    calcola_physical_coverage()
