@@ -72,6 +72,7 @@ def stampa_length(read_list, nome_file):
 def stampa_coverage(coverage, file_name, region_name):
     """Crea e scrive un file wiggle relativo alla coverage calcolata.
     """
+    file_name = re.sub(re.compile("_[a-z]+$"), "", file_name)
     new_file = open(file_name + "_coverage.wig", "w")
     new_file.write("variableStep chrom=" + region_name + "\n")
     for (pos, n) in coverage:

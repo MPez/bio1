@@ -192,9 +192,9 @@ def calcola_insert_length():
     stampa_messaggi("fine stampa gnuplot")
     stampa_length(discarded_insert_length, "discarded_insert_length.txt")
     stampa_messaggi("inizio stampa wiggle")
-    stampa_coverage(coverage, "unique_physical", region_name)
-    stampa_coverage(insert_len_wig, "insert_length", region_name)
-    stampa_coverage(disc_insert_len_wig, "discarded_insert_length",
+    stampa_coverage(coverage, "unique-physical", region_name)
+    stampa_coverage(insert_len_wig, "insert-length", region_name)
+    stampa_coverage(disc_insert_len_wig, "discarded-insert-length",
                     region_name)
     stampa_messaggi("fine stampa wiggle")
     stampa_messaggi("stat", insert_length, discarded_insert_length)
