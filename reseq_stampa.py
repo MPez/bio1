@@ -1,4 +1,5 @@
 #Resequencing project
+#Pezzutti Marco - 1084411
 #modulo con funzioni di stampa
 
 import pysam

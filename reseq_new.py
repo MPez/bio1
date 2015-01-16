@@ -1,9 +1,9 @@
 #Resequencing project
+#Pezzutti Marco - 1084411
 #modulo principale
 
 from reseq_stampa import *
 from reseq_utility import *
-import math
 
 #massima lunghezza tollerata per la lunghezza degli inserti
 max_insert_length = 20000
@@ -90,6 +90,8 @@ def esamina_bam():
                     count = 0
         except StopIteration:
             terminato = True
+            #all'uscita dal ciclo rimangono da esaminare le ultime 2 read
+            #presenti nel file bam di origine, vengono esaminate come le altre
             if len(equal_reads) > 0:
                 if count == 0:
                     single_reads.append(prev_read)
@@ -105,6 +107,7 @@ def esamina_bam():
                                      multiple_mate_reads,
                                      multiple_single_reads)
                     equal_reads.clear()
+    #serie di comandi di stampa informazioni per l'utente e file bam
     stampa_messaggi("fine esamina")
     stampa_messaggi("inizio stampa file")
     stampa_read(single_reads, bam_file, "single_reads")
@@ -121,36 +124,49 @@ def calcola_insert_length():
     li filtra se sono fuori range massimo e li stampa su due file separati.
     """
     stampa_messaggi("inizio length")
+    #apertura bam file
     unique_file = apri_bam_file("unique")
+    #creazione iteratore
     unique_it = iter(unique_file)
+    #riferimenti alla read e al suo mate
     read = next(unique_it)
     mate = next(unique_it)
-    insert_length = []
-    discarded_insert_length = []
+    #riferimenti a caratteristiche del genoma in esame
     region_number = unique_file.nreferences
     region_name = unique_file.references[region_number - 1]
     region_length = unique_file.lengths[region_number - 1]
+    #riferimento alla lista relativa alla physical coverage
     coverage = [[pos, 0] for pos in range(1, region_length + 1)]
+    #riferimenti alle liste relative a lunghezza degli inserti
+    insert_length = []
+    discarded_insert_length = []
     insert_len_wig = [[pos, 0] for pos in range(1, region_length + 1)]
     disc_insert_len_wig = [[pos, 0] for pos in range(1, region_length + 1)]
+    #variabile di controllo del ciclo
     terminato = False
     while not terminato:
         try:
+            #posizione di inizio delle read
             read_pos = read.reference_start
             mate_pos = mate.reference_start
+            #controllo sulla posizione delle read
             if read_pos < mate_pos:
                 length = mate_pos + mate.reference_length - read_pos
+                #se la lunghezza dell'inserto è nel range,
+                #inserisco i dati nelle liste
                 if length < max_insert_length:
                     insert_len_wig[read_pos][1] += length
                     insert_len_wig[mate_pos][1] += length
                     insert_length.append((get_query_name(read), length))
                     for i in range(read_pos, length):
                         coverage[i][1] += 1
+                #se la lunghezza è fuori range escludo i mate pair
                 else:
                     disc_insert_len_wig[read_pos][1] += length
                     disc_insert_len_wig[mate_pos][1] += length
                     discarded_insert_length.append((get_query_name(read),
                                                     length))
+            #procedimento analogo al precedente con ordine delle read invertite
             else:
                 length = read_pos + read.reference_length - mate_pos
                 if length < max_insert_length:
@@ -164,10 +180,12 @@ def calcola_insert_length():
                     disc_insert_len_wig[read_pos][1] += length
                     discarded_insert_length.append((get_query_name(read),
                                                     length))
+            #avanzo gli iteratori per ottenere i nuovi mate pair da controllare
             read = next(unique_it)
             mate = next(unique_it)
         except StopIteration:
             terminato = True
+    #serie di messaggi informativi e di stampa liste in file gnuplot e wiggle
     stampa_messaggi("fine length")
     stampa_messaggi("inizio stampa gnuplot")
     stampa_length(insert_length, "insert_length.txt")
@@ -187,13 +205,18 @@ def calcola_coverage(read_type):
     """Calcola la sequence coverage del tipo di read richiesto e la stampa
     su un file wiggle."""
     stampa_messaggi("inizio coverage", read_type=read_type)
+    #apertura bam file
     bam_file = apri_bam_file(read_type)
+    #riferimenti a caratteristiche del genoma in esame
     region_number = bam_file.nreferences
     region_name = bam_file.references[region_number - 1]
     region_length = bam_file.lengths[region_number - 1]
+    #refiremento alla lista relativa alla sequence coverage
     coverage = []
+    #per ogni base del genoma viene calcolata la coverage
     for col in bam_file.pileup(region_name, 0, region_length - 1):
         coverage.append((col.reference_pos, col.nsegments))
+    #serie di messaggi informativi e di stampa lista in file wiggle
     stampa_messaggi("fine coverage")
     stampa_messaggi("inizio stampa wiggle")
     stampa_coverage(coverage, read_type, region_name)
