@@ -127,21 +127,58 @@ def calcola_insert_length():
     mate = next(unique_it)
     insert_length = []
     discarded_insert_length = []
+    region_number = unique_file.nreferences
+    region_name = unique_file.references[region_number - 1]
+    region_length = unique_file.lengths[region_number - 1]
+    coverage = [[pos, 0] for pos in range(1, region_length + 1)]
+    insert_len_wig = [[pos, 0] for pos in range(1, region_length + 1)]
+    disc_insert_len_wig = [[pos, 0] for pos in range(1, region_length + 1)]
     terminato = False
     while not terminato:
         try:
-            length = math.fabs(read.reference_start - mate.reference_start)
-            if length < max_insert_length:
-                insert_length.append((get_query_name(read), length))
+            read_pos = read.reference_start
+            mate_pos = mate.reference_start
+            if read_pos < mate_pos:
+                length = mate_pos + mate.reference_length - read_pos
+                if length < max_insert_length:
+                    insert_len_wig[read_pos][1] += length
+                    insert_len_wig[mate_pos][1] += length
+                    insert_length.append((get_query_name(read), length))
+                    for i in range(read_pos, length):
+                        coverage[i][1] += 1
+                else:
+                    disc_insert_len_wig[read_pos][1] += length
+                    disc_insert_len_wig[mate_pos][1] += length
+                    discarded_insert_length.append((get_query_name(read),
+                                                    length))
             else:
-                discarded_insert_length.append((get_query_name(read), length))
+                length = read_pos + read.reference_length - mate_pos
+                if length < max_insert_length:
+                    insert_len_wig[mate_pos][1] += length
+                    insert_len_wig[read_pos][1] += length
+                    insert_length.append((get_query_name(read), length))
+                    for i in range(mate_pos, read_pos + read.reference_length):
+                        coverage[i][1] += 1
+                else:
+                    disc_insert_len_wig[mate_pos][1] += length
+                    disc_insert_len_wig[read_pos][1] += length
+                    discarded_insert_length.append((get_query_name(read),
+                                                    length))
             read = next(unique_it)
             mate = next(unique_it)
         except StopIteration:
             terminato = True
     stampa_messaggi("fine length")
+    stampa_messaggi("inizio stampa gnuplot")
     stampa_length(insert_length, "insert_length.txt")
+    stampa_messaggi("fine stampa gnuplot")
     stampa_length(discarded_insert_length, "discarded_insert_length.txt")
+    stampa_messaggi("inizio stampa wiggle")
+    stampa_coverage(coverage, "unique_physical", region_name)
+    stampa_coverage(insert_len_wig, "insert_length", region_name)
+    stampa_coverage(disc_insert_len_wig, "discarded_insert_length",
+                    region_name)
+    stampa_messaggi("fine stampa wiggle")
     stampa_messaggi("stat", insert_length, discarded_insert_length)
     unique_file.close()
 
@@ -164,43 +201,9 @@ def calcola_coverage(read_type):
     bam_file.close()
 
 
-def calcola_physical_coverage():
-    """Calcola la physical coverage dagli unique mate pair e la stampa
-    su un fie wiggle."""
-    stampa_messaggi("inizio physical")
-    bam_file = apri_bam_file("unique")
-    bam_iter = iter(bam_file)
-    read = next(bam_iter)
-    mate = next(bam_iter)
-    region_number = bam_file.nreferences
-    region_name = bam_file.references[region_number - 1]
-    region_length = bam_file.lengths[region_number - 1]
-    coverage = [[pos, 0] for pos in range(1, region_length + 1)]
-    terminato = False
-    while not terminato:
-        try:
-            read_pos = read.reference_start
-            mate_pos = mate.reference_start
-            if read_pos < mate_pos:
-                for i in range(read_pos, mate_pos + mate.reference_length):
-                    coverage[i][1] += 1
-            else:
-                for i in range(mate_pos, read_pos + read.reference_length):
-                    coverage[i][1] += 1
-            read = next(bam_iter)
-            mate = next(bam_iter)
-        except StopIteration:
-            terminato = True
-    stampa_messaggi("fine physical")
-    stampa_messaggi("inizio stampa wiggle")
-    stampa_coverage(coverage, "unique_physical", region_name)
-    stampa_messaggi("fine stampa wiggle")
-    bam_file.close()
-
 if __name__ == "__main__":
     #esamina_bam()
-    #calcola_insert_length()
+    calcola_insert_length()
     #calcola_coverage("unique_sorted")
     #calcola_coverage("single_sorted")
     #calcola_coverage("multiple_sorted")
-    calcola_physical_coverage()

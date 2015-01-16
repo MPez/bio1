@@ -9,19 +9,20 @@ import re
 def stampa_messaggi(mess, insert=0, discarded=0, read_type=0):
     """Stampa messaggi di testo per l'utente con informazioni
     sull'avanzamento e sulle statistiche ottenute."""
-    if mess == "inizio lenght":
-        print("calcolo lunghezza inserti iniziato")
+    if mess == "inizio length":
+        print("calcolo lunghezza inserti e physical coverage iniziato")
     elif mess == "fine length":
-        print("calcolo lunghezza inserti terminato")
+        print("calcolo lunghezza inserti e physical coverage terminato")
+    elif mess == "inizio stampa gnuplot":
         print("preparazione file input per gnuplot")
+    elif mess == "fine stampa gnuplot":
+        print("preparazione file input per gnuplot terminata")
     elif mess == "stat":
-        print("sono stati rilevati", len(insert), "mate pair")
+        print("sono stati rilevati", len(insert), "unique pair")
         print("sono stati scartati", len(discarded),
               "mate pair in quanto fuori range")
         print("valori statistici sulla lunghezza degli inserti genomici")
         print("media", statistics.mean(j for (i, j) in insert),
-              "mediana", statistics.median(j for (i, j) in insert),
-              "varianza", statistics.variance(j for (i, j) in insert),
               "deviazione standard", statistics.stdev(j for (i, j) in insert))
     elif mess == "inizio esamina":
         print("analisi bam file per ricerca single, "
@@ -38,10 +39,6 @@ def stampa_messaggi(mess, insert=0, discarded=0, read_type=0):
         print("calcolo sequence coverage per %s read" % (name))
     elif mess == "fine coverage":
         print("calcolo sequence coverage termianto")
-    elif mess == "inizio physical":
-        print("calcola physical coverage iniziato")
-    elif mess == "fine physical":
-        print("calcolo physical coverage terminato")
     elif mess == "inizio stampa wiggle":
         print("creazione file wiggle iniziata")
     elif mess == "fine stampa wiggle":
