@@ -15,7 +15,7 @@ start_reseq() {
 # converte tutti i file bam presenti nella cartella e 
 # li converte in file sam
 bam_to_sam() {
-    echo "conversione da file bam a file sam"
+    echo "Conversione da file bam a file sam"
     suff="bam"
     SUFF="sam"
     cd $1
@@ -36,14 +36,14 @@ merge_pass_sort() {
     name="_name"
     temp="temp"
 
-    echo "merge dei file pass $pass1$suff e $pass2$suff"
+    echo "Merge dei file pass $pass1$suff e $pass2$suff"
     cd $bam_dir
     samtools merge $all_name$suff $pass1$suff $pass2$suff
 
-    echo "sort per nome read del file $all_name$suff"
+    echo "Sort per nome read del file $all_name$suff"
     samtools sort -o $all_sorted$name$suff -n -T $temp$suff $all_name$suff
 
-    echo "sort per posizione read e creazione indice del file $all_name$suff"
+    echo "Sort per posizione read e creazione indice del file $all_name$suff"
     samtools sort -o $all_sorted$suff -T $temp$suff $all_name$suff
     samtools index -b $all_sorted$suff
     cd ..
@@ -52,7 +52,7 @@ merge_pass_sort() {
 
 # crea dai file wig i relativi file tdf
 wig_to_tdf() {
-    echo "creazione file tdf"
+    echo "Creazione file tdf"
     suff="wig"
     SUFF="tdf"
     genome="./reference_A_laidlawii/reference_A_laidlawii.fasta.fai"
@@ -67,7 +67,7 @@ wig_to_tdf() {
 
 # genera i grafici con gnuplot
 plot() {
-    echo "generazione grafici lunghezza inserti"
+    echo "Generazione grafici lunghezza inserti"
     graph="plot.gnuplot"
     gnuplot $graph
 }
@@ -92,7 +92,12 @@ while getopts ":a:b:gmsw" flag; do
             ;;
         w ) wig_to_tdf
             ;;
-        * ) echo "Opzione non presente, nessuna operazione da svolgere."
+        * ) 
+            if [ $flag == ":" ]; then
+                echo "Per eseguire la conversione dei file bam in sam è necessario inserire la cartella dove sono salvati i file."
+            else
+                echo "Opzione non presente, nessuna operazione da svolgere."
+            fi
             ;;
     esac
 done
