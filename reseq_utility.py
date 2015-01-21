@@ -4,7 +4,9 @@
 
 import pysam
 import re
+import os
 from reseq_stampa import dir_risultati
+
 
 # cartella di destinazione dei file pass bam forniti
 bam_dir = None
@@ -25,6 +27,10 @@ def set_bam_dir(dir):
     di destinazione dei file bam."""
     global bam_dir
     bam_dir = dir
+
+
+def chiama_reseq():
+    os.system("bash reseq.sh -t")
 
 
 def apri_bam_file(name):

@@ -232,6 +232,7 @@ if __name__ == "__main__":
     set_bam_dir(sys.argv[1])
     esamina_bam()
     calcola_insert_length()
+    chiama_reseq()
     calcola_coverage("unique_sorted")
     calcola_coverage("single_sorted")
     calcola_coverage("multiple_sorted")

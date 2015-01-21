@@ -11,7 +11,7 @@ import os
 global dir_risultati
 dir_risultati = "risultati/"
 
-#crea la cartella di destinazione dei risultati se non
+# crea la cartella di destinazione dei risultati se non esiste
 if not os.path.exists(dir_risultati):
     os.makedirs(dir_risultati)
 

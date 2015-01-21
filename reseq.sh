@@ -49,13 +49,29 @@ merge_pass_sort() {
     cd ..
 }
 
+# ordina i file pass creati e crea l'indice
+sort_bam() {
+    suff=".bam"
+    unique="unique_reads"
+    single="single_reads"
+    multiple="multiple_reads"
+    SUFF="_sorted"
+    temp="temp"
+
+    cd ris_dir
+    for read in unique single multiple; do
+        samtools sort -o $read$SUFF$suff -T $temp$suff $read$suff
+        samtools index -b $read$SUFF$suff
+    done
+    cd ..
+}
 
 # crea dai file wig i relativi file tdf
 wig_to_tdf() {
     echo "Creazione file tdf"
     suff="wig"
     SUFF="tdf"
-    genome="./reference_A_laidlawii/reference_A_laidlawii.fasta.fai"
+    genome="reference_A_laidlawii/reference_A_laidlawii.fasta.fai"
 
     cd $ris_dir
     for s in $(ls *.$suff); do
@@ -73,7 +89,7 @@ plot() {
 }
 
 # main
-while getopts ":a:b:gms:w" flag; do
+while getopts ":a:b:gms:tw" flag; do
     case $flag in
         a )
             merge_pass_sort
@@ -89,6 +105,8 @@ while getopts ":a:b:gms:w" flag; do
         m ) merge_pass_sort
             ;;
         s ) start_reseq $OPTARG
+            ;;
+        t ) sort_bam
             ;;
         w ) wig_to_tdf
             ;;
