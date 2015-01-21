@@ -2,8 +2,8 @@
 # Resequencing project
 # Pezzutti Marco - 1084411
 
-ris_dir="risultati"
-bam_dir="pass_bam"
+ris_dir="risultati/"
+bam_dir="pass_bam/"
 
 # avvia lo script python che esegue il resequencing
 start_reseq() {
@@ -58,7 +58,7 @@ sort_bam() {
     SUFF="_sorted"
     temp="temp"
 
-    cd ris_dir
+    cd $ris_dir
     for read in $unique $single $multiple; do
         samtools sort -o $read$SUFF$suff -T $temp$suff $read$suff
         samtools index -b $read$SUFF$suff
