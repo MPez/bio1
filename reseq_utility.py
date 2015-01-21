@@ -4,6 +4,7 @@
 
 import pysam
 import re
+from reseq_stampa import dir_risultati
 
 # cartella di destinazione dei file pass bam forniti
 bam_dir = None
@@ -19,6 +20,13 @@ single_sorted = "single_reads_sorted.bam"
 multiple_sorted = "multiple_reads_sorted.bam"
 
 
+def set_bam_dir(dir):
+    """Imposta la variabile globale relativa alla cartella
+    di destinazione dei file bam."""
+    global bam_dir
+    bam_dir = dir
+
+
 def apri_bam_file(name):
     """Apre il file bam desiderato in base all'indice passato come argomento.
 
@@ -30,17 +38,17 @@ def apri_bam_file(name):
     elif name == "all":
         return pysam.AlignmentFile(bam_dir + bam_file_all, "rb")
     elif name == "single":
-        return pysam.AlignmentFile(single_file, "rb")
+        return pysam.AlignmentFile(dir_risultati + single_file, "rb")
     elif name == "unique":
-        return pysam.AlignmentFile(unique_file, "rb")
+        return pysam.AlignmentFile(dir_risultati + unique_file, "rb")
     elif name == "multiple":
-        return pysam.AlignmentFile(multiple_file, "rb")
+        return pysam.AlignmentFile(dir_risultati + multiple_file, "rb")
     elif name == "single_sorted":
-        return pysam.AlignmentFile(single_sorted, "rb")
+        return pysam.AlignmentFile(dir_risultati + single_sorted, "rb")
     elif name == "unique_sorted":
-        return pysam.AlignmentFile(unique_sorted, "rb")
+        return pysam.AlignmentFile(dir_risultati + unique_sorted, "rb")
     elif name == "multiple_sorted":
-        return pysam.AlignmentFile(multiple_sorted, "rb")
+        return pysam.AlignmentFile(dir_risultati + multiple_sorted, "rb")
 
 
 def get_query_name(query):

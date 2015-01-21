@@ -229,7 +229,7 @@ def calcola_coverage(read_type):
 
 
 if __name__ == "__main__":
-    bam_dir = sys.argv[1]
+    set_bam_dir(sys.argv[1])
     esamina_bam()
     calcola_insert_length()
     calcola_coverage("unique_sorted")

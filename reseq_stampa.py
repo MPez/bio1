@@ -7,6 +7,7 @@ import statistics
 import re
 
 # cartella dove vengono salvati i file prodotti
+global dir_risultati
 dir_risultati = "risultati/"
 
 

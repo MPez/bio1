@@ -8,7 +8,7 @@ bam_dir="pass_bam"
 # avvia lo script python che esegue il resequencing
 start_reseq() {
     script="reseq_new.py"
-    python $script
+    python $script $1
 }
 
 
@@ -73,7 +73,7 @@ plot() {
 }
 
 # main
-while getopts ":a:b:gmsw" flag; do
+while getopts ":a:b:gms:w" flag; do
     case $flag in
         a )
             merge_pass_sort
@@ -88,7 +88,7 @@ while getopts ":a:b:gmsw" flag; do
             ;;
         m ) merge_pass_sort
             ;;
-        s ) start_reseq
+        s ) start_reseq $OPTARG
             ;;
         w ) wig_to_tdf
             ;;
