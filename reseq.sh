@@ -59,7 +59,7 @@ sort_bam() {
     temp="temp"
 
     cd ris_dir
-    for read in unique single multiple; do
+    for read in $unique $single $multiple; do
         samtools sort -o $read$SUFF$suff -T $temp$suff $read$suff
         samtools index -b $read$SUFF$suff
     done
