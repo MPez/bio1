@@ -5,10 +5,15 @@
 import pysam
 import statistics
 import re
+import os
 
 # cartella dove vengono salvati i file prodotti
 global dir_risultati
 dir_risultati = "risultati/"
+
+#crea la cartella di destinazione dei risultati se non
+if not os.path.exists(dir_risultati):
+    os.makedirs(dir_risultati)
 
 
 def stampa_messaggi(mess, insert=0, discarded=0, read_type=0):
