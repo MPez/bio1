@@ -15,9 +15,10 @@ start_reseq() {
 # converte tutti i file bam presenti nella cartella e 
 # li converte in file sam
 bam_to_sam() {
-    echo "Conversione da file bam a file sam"
     suff="bam"
     SUFF="sam"
+
+    echo "Conversione da file bam a file sam"
     cd $1
     for s in $(ls *.$suff); do
         samtools view -o ${s%.$suff}.$SUFF -h $s
@@ -58,6 +59,7 @@ sort_bam() {
     SUFF="_sorted"
     temp="temp"
 
+    echo "Ordinamento file bam"
     cd $ris_dir
     for read in $unique $single $multiple; do
         samtools sort -o $read$SUFF$suff -T $temp$suff $read$suff
@@ -68,11 +70,11 @@ sort_bam() {
 
 # crea dai file wig i relativi file tdf
 wig_to_tdf() {
-    echo "Creazione file tdf"
     suff="wig"
     SUFF="tdf"
     genome="reference_A_laidlawii/reference_A_laidlawii.fasta.fai"
 
+    echo "Creazione file tdf"
     cd $ris_dir
     for s in $(ls *.$suff); do
         igvtools toTDF $s $s.$SUFF $genome
@@ -83,8 +85,9 @@ wig_to_tdf() {
 
 # genera i grafici con gnuplot
 plot() {
-    echo "Generazione grafici lunghezza inserti"
     graph="plot.gnuplot"
+
+    echo "Generazione grafici lunghezza inserti"
     gnuplot $graph
 }
 
