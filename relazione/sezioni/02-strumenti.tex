@@ -1,0 +1,17 @@
+\clearpage
+\section{Strumenti utilizzati}
+Lo svolgimento del progetto richiede di effettuare un analisi dei file \acronimo{bam} forniti con lo scopo di estrarre alcune informazioni presenti in essi; inoltre è stata lasciata libera scelta sugli strumenti da utilizzare e sulle informazioni da ricercare.
+
+Di seguito verranno descritti gli strumenti che ho scelto di utilizzare e la motivazione che mi ha portato a questa decisione.
+
+\begin{description}
+\item[\textsc{Samtools}]: i \emph{samtools} sono un insieme di strumenti utili per la manipolazione di file in formato \acronimo{BAM/SAM} che consentono la visualizzazione, la conversione, l'unione, l'ordinamento e l'indicizzazione di un file; tali operazioni sono necessarie per ottenere un file di partenza che sia coerente con l'analisi che si vuole effettuare;
+\item[\textsc{Python}]: la natura del progetto non richiede lo sviluppo di un software particolarmente complicato e interattivo, è sufficiente che sia in grado di leggere i file, effettuare alcuni calcoli e scrivere i risultati su nuovi file.
+
+Per questo motivo la scelta è caduta su \emph{python}: è un linguaggio che consente di sviluppare velocemente script ed è dotato di una grande varietà di librerie, tipi e strutture dati che lo rendono molto flessibile e adatto a numerosi scopi;
+\item[\textsc{Pysam}]: è una libreria wrapper di \emph{HTSlib\footnote{\url{http://www.htslib.org/}}} scritta per essere utilizzata con \emph{python} e che consente di leggere e scrivere le informazioni presenti nei \acronimo{bam/sam} file in modo rapido ed efficiente.
+\item[\textsc{Gnuplot}]: è un software che consente di realizzare grafici a partire da funzioni o dati grezzi; nel progetto è stato usato per disegnare la lunghezza degli inserti trovati in modo da poter analizzare tali dati;
+\item[\textsc{IGV}]: l'\emph{Integrative Genomic Viewer} è un programma che consente di visualizzare tracce contenenti dati genomici attraverso l'uso di diversi tipi di file tra i quali quelli in formato \emph{wiggle};
+\item[\textsc{IGVtools}]: insieme di strumenti utili per la preparazione dei dati da visualizzare nel viewer;
+\item[\textsc{Bash}]: per automatizzare il processo di ottenimento dei risultati è stato creato uno script \emph{bash}.
+\end{description}

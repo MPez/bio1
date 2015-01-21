@@ -2,6 +2,7 @@
 # Pezzutti Marco - 1084411
 # modulo principale
 
+import sys
 from reseq_stampa import *
 from reseq_utility import *
 
@@ -66,7 +67,8 @@ def esamina_bam():
             # nuove read da controllare
             prev_read = read
             read = next(bam_it)
-            # se le read sono uguali aggiorno il contatore e aggiungo alla lista
+            # se le read sono uguali aggiorno il contatore
+            # e le aggiungo alla lista
             if get_query_name(prev_read) == get_query_name(read):
                 count += 1
                 equal_reads.append(prev_read)
@@ -166,7 +168,8 @@ def calcola_insert_length():
                     disc_insert_len_wig[mate_pos][1] += length
                     discarded_insert_length.append((get_query_name(read),
                                                     length))
-            # procedimento analogo al precedente con ordine delle read invertite
+            # procedimento analogo al precedente
+            # con ordine delle read invertite
             else:
                 length = read_pos + read.reference_length - mate_pos
                 if length < max_insert_length:
@@ -180,7 +183,8 @@ def calcola_insert_length():
                     disc_insert_len_wig[read_pos][1] += length
                     discarded_insert_length.append((get_query_name(read),
                                                     length))
-            # avanzo gli iteratori per ottenere i nuovi mate pair da controllare
+            # avanzo gli iteratori per ottenere i nuovi mate pair
+            # da controllare
             read = next(unique_it)
             mate = next(unique_it)
         except StopIteration:
@@ -225,8 +229,9 @@ def calcola_coverage(read_type):
 
 
 if __name__ == "__main__":
-    # esamina_bam()
+    bam_dir = sys.argv[1]
+    esamina_bam()
     calcola_insert_length()
-    # calcola_coverage("unique_sorted")
-    # calcola_coverage("single_sorted")
-    # calcola_coverage("multiple_sorted")
+    calcola_coverage("unique_sorted")
+    calcola_coverage("single_sorted")
+    calcola_coverage("multiple_sorted")

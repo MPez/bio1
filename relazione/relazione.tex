@@ -1,0 +1,86 @@
+\documentclass[11pt,a4paper,final]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage{layaureo}
+\usepackage{microtype}
+\usepackage{fancyhdr}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{eurosym}
+\usepackage[usenames,dvipsnames]{color}
+%\usepackage[left=2cm,right=2cm,top=2.5cm,bottom=3cm]{geometry}
+%\usepackage{indentfirst}
+\usepackage{hyperref}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{listings}
+\usepackage{xspace}
+\usepackage{tikz}
+\usetikzlibrary{trees}
+
+\definecolor{redUni}{RGB}{181,18,27}
+
+\author{Marco Pezzutti - 1084411}
+\title{Resequencing}
+\date{}
+
+\def\campo#1{\uppercase{\textit{#1}}\xspace}
+\def\acronimo#1{\uppercase{#1}\xspace}
+\def\script#1{\texttt{#1}\xspace}
+\def\modo#1{\uppercase{#1}\xspace}
+\def\comando#1{\uppercase{\texttt{#1}}\xspace}
+
+\pagestyle{fancy}
+\renewcommand{\headrulewidth}{0pt}
+\fancyhead[RE, LO]{}
+\fancyfoot{}
+\fancyfoot[RO, LE]{\thepage{}}
+\fancyfoot[RE, LO]{Resequencing - Progetto di Bioinformatica}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\begin{document}
+\begin{titlepage}
+\begin{center}
+\includegraphics[width=40mm]{immagini/uni_pad.png}\\[1cm]
+\textcolor{redUni}{\textsc{\LARGE Università degli Studi di Padova}}\\[0.5cm]
+\textcolor{redUni}{\textsc{\Large Dipartimento di Matematica}}\\[0.5cm]
+\textcolor{redUni}{\textsc{\Large Corso di Laurea Magistrale in Informatica}}\\[2cm]
+\textsc{\Large Progetto di Bioinformatica}\\[0.5cm]
+\textsc{\large Anno 2014-2015} \\[1cm]
+\rule{\linewidth}{0.3mm}\\[0.5cm]
+{\huge \bfseries Resequencing}\\[0.3cm]
+\rule{\linewidth}{0.3mm}\\[1cm]
+\begin{minipage}{0.4\textwidth}
+	\begin{flushleft}
+	\emph{Autore:}\\
+	\textsc{\large Pezzutti Marco}\\
+	\end{flushleft}
+\end{minipage}
+\begin{minipage}{0.4\textwidth}
+	\begin{flushright}
+	\emph{Matricola:}\\
+	\textsc{\large 1084411}\\
+	\end{flushright}
+\end{minipage}
+\end{center}
+\end{titlepage}
+
+\tableofcontents
+\listoffigures
+\listoftables
+\newpage
+
+\input{sezioni/01-introduzione.tex}
+\input{sezioni/02-strumenti.tex}
+\input{sezioni/03-svolgimento.tex}
+\input{sezioni/04-esecuzione.tex}
+\input{sezioni/05-risultati.tex}
+\input{sezioni/06-conclusioni.tex}
+
+\end{document}

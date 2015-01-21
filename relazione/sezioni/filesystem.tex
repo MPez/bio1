@@ -1,0 +1,30 @@
+%disegna la struttura di cartelle presente nell'archivio consegnato
+\tikzstyle{every node}=[thick,anchor=west, rounded corners, font={\scriptsize\ttfamily}, inner sep=2.5pt]
+\tikzstyle{selected}=[draw=blue,fill=blue!10]
+\tikzstyle{root}=[selected, fill=blue!30]
+\tikzstyle{optional}=[dashed, draw=blue, fill=blue!5]
+
+\begin{tikzpicture}[%
+    scale=.7,
+    grow via three points={one child at (0.5,-0.65) and
+    two children at (0.5,-0.65) and (0.5,-1.1)},
+    edge from parent path={(\tikzparentnode.south) |- (\tikzchildnode.west)}]
+  \node [root] {bioinfo}
+    child { node [selected] {pass\_bam}
+      child { node {pass\_reads1.bam}}
+	  child { node {pass\_reads2.bam}}
+    }       
+    child { node at (0,-1.5) [selected] {reference\_A\_laidlawii}
+      child { node {reference\_A\_laidlawii.fasta}}
+      child { node {reference\_A\_laidlawii.fasta.fai}}
+    }
+    child { node at (0,-3) [optional] {risultati}
+      child { node {\dots}}
+    }
+    child { node at (0,-4) {igv\_session.xml}}
+    child { node at (0,-4.2) {plot.gnuplot}}
+    child { node at (0,-4.4) {reseq.sh}}
+    child { node at (0,-4.6) {reseq\_new.py}}
+    child { node at (0,-4.8) {reseq\_stampa.py}}
+    child { node at (0,-5) {reseq\_utility.py}};
+\end{tikzpicture}

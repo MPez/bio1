@@ -6,8 +6,9 @@ import pysam
 import statistics
 import re
 
-# directory dove vengono salvati i file prodotti
+# cartella dove vengono salvati i file prodotti
 dir_risultati = "risultati/"
+
 
 def stampa_messaggi(mess, insert=0, discarded=0, read_type=0):
     """Stampa messaggi di testo per l'utente con informazioni
@@ -51,7 +52,7 @@ def stampa_messaggi(mess, insert=0, discarded=0, read_type=0):
 def stampa_read(read_list, bam_file, nome_file):
     """Crea e stampa un sam file dove vengono scritte le read trovate.
     """
-    new_file = pysam.AlignmentFile(risultati + nome_file + ".bam", "wb",
+    new_file = pysam.AlignmentFile(dir_risultati + nome_file + ".bam", "wb",
                                    header=bam_file.header)
     for read in read_list:
         new_file.write(read)
@@ -62,7 +63,7 @@ def stampa_length(read_list, nome_file):
     """Crea e scrive un file di testo relativo ai mate pair trovati e
     alla lunghezza degli inserti corrispondenti.
     Tale file serve per essere usati con gnuplot."""
-    read_file = open(risultati + nome_file, "w")
+    read_file = open(dir_risultati + nome_file, "w")
     val = 0
     for (nome, length) in read_list:
         val += 1
@@ -75,7 +76,7 @@ def stampa_coverage(coverage, file_name, region_name):
     """Crea e scrive un file wiggle relativo alla coverage calcolata.
     """
     file_name = re.sub(re.compile("_[a-z]+$"), "", file_name)
-    new_file = open(risultati + file_name + "_coverage.wig", "w")
+    new_file = open(dir_risultati + file_name + "_coverage.wig", "w")
     new_file.write("variableStep chrom=" + region_name + "\n")
     for (pos, n) in coverage:
         new_file.write(str(pos) + "\t" + str(n) + "\n")

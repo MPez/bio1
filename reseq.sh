@@ -77,7 +77,7 @@ while getopts ":a:b:gmsw" flag; do
     case $flag in
         a )
             merge_pass_sort
-            start_reseq
+            start_reseq $OPTARG
             bam_to_sam $OPTARG
             wig_to_tdf
             gnuplot

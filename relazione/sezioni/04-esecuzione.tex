@@ -1,0 +1,35 @@
+\clearpage
+\section{Esecuzione}
+L'esecuzione del programma è gestita mediante lo script \emph{bash} chiamato \script{reseq}; tale script è stato dotato di diverse opzioni che permettono di eseguire il programma con diverse modalità richiamabili tramite gli appositi flag:
+
+\begin{description}
+\item[\texttt{-a arg}]: modalità \modo{all}, esegue in sequenza tutte le operazioni descritte nella sezione \ref{sec:bash} e comprende tutte le altre modalità di esecuzione; permette quindi di eseguire l'intero programma ed ottenere tutti i risultati; l'argomento \texttt{arg} è necessario per eseguire la modalità \modo{bam to sam};
+\item[\texttt{-b arg}]: modalità \modo{bam to sam}, effettua la conversione di tutti i file \acronimo{bam} presenti nella cartella passata come argomento \texttt{arg} in file \acronimo{sam}, consentendo la visualizzazione all'utente;
+\item[\texttt{-g}]: modalità \modo{gnuplot}, richiama \emph{gnuplot} per disegnare i grafici sulla lunghezza degli inserti;
+\item[\texttt{-m}]: modalità \modo{merge pass sort}, esegue l'unione dei file \acronimo{pass} forniti, crea una versione ordinata per nome e una per posizione;
+\item[\texttt{-s}]: modalità \modo{start reseq}, avvia lo script \emph{Python} che esegue l'elaborazione dei dati;
+\item[\texttt{-w}]: modalità \modo{wig to tdf}, converte i file \emph{wiggle} creati in file \acronimo{tdf}, pronti per essere visualizzati su \acronimo{igv}.
+\end{description}
+
+Affinché l'esecuzione del programma non provochi errori è necessario che la struttura di file sia coerente con quella usata nell'ambiente di sviluppo; insieme alla presente relazione viene fornito un archivio contenente tutti i file sviluppati necessari al funzionamento, non vengono però inclusi quelli relativi ai file \acronimo{pass} di riferimento e al genoma di \emph{A. laidlawii}.
+
+Una volta estratto l'archivio in una destinazione a piacere è necessario quindi copiare i file richiesti nelle cartelle corrette; qui di seguito viene descritta la loro struttura nell'ambiente di sviluppo:\\*
+
+\input{sezioni/filesystem.tex}
+
+Le cartelle evidenziate in blu chiaro sono obbligatorie mentre quella tratteggiata verrà creata dal programma in fase di esecuzione e, come si evince dal nome, vi verranno salvati i risultati ottenuti man mano.
+
+È presente inoltre il file \script{igv\_session.xml} che rappresenta una sessione di visualizzazione su \acronimo{igv}: è stata creata manualmente e permette, una volta aperto il genome viewer di importare le tracce create dal programma.
+La cartella radice può avere un nome a discrezione dell'utente e non influenza il programma in nessun modo.
+
+Devono essere inoltre installati sul sistema e presenti nella variabile di sistema \comando{path} i seguenti software e librerie:
+\begin{itemize}
+\item Samtools;
+\item Python;
+\item Pysam;
+\item \acronimo{igv};
+\item IGVtools;
+\item Gnuplot;
+\item Bash;
+\end{itemize}
+

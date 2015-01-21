@@ -1,0 +1,67 @@
+\clearpage
+\section{Sviluppo}
+Prima di iniziare lo sviluppo del programma ho avuto la necessità di approfondire lo studio del formato \acronimo{bam/sam} per comprendere come sfruttare al meglio la struttura del file stesso e delle librerie che aiutano l'estrazione dei dati: ciò è stato necessario, in quanto tale formato di file presenta molti campi per ogni read e solo alcuni di essi sono risultati essere davvero utili agli scopi del progetto.
+
+Ho riservato inoltre una parte del tempo allo studio del linguaggio di programmazione scelto (\emph{Python}), in quanto non lo avevo mai utilizzato prima, e agli strumenti da utilizzare durante il progetto in modo da poter sfruttare al meglio le loro caratteristiche peculiari.
+
+\subsection{Studio preliminare}
+La prima fase dello sviluppo ha riguardato lo studio diretto dei file \acronimo{bam/sam}: tale attività mi è stata necessaria per capire quali dati erano necessari e qual era il modo migliore per estrarli.
+
+È stato fondamentale infatti trovare degli algoritmi che esaminassero le read in modo efficiente, in quanto la notevole quantità delle stesse ha un grande impatto nei tempi di esecuzione del programma.
+
+Inizialmente avevo scelto di utilizzare i due file \acronimo{pass} forniti in modo parallelo, mantenendo quindi i file separati e confrontando una read alla volta per ogni file; questo approccio mi ha consentito di trovare \emph{single read} e \emph{unique read} in modo semplice ma rendeva inutilmente complicato trovare le \emph{multiple read}.
+
+Ho optato quindi per l'unione dei due file in un unico file, ordinato per nome delle read in modo da semplificare la ricerca delle informazioni.
+
+\subsection{Script \emph{Python}}
+Il primo passo è stato quello di individuare \emph{single}, \emph{unique} e \emph{multiple read} per poi poter proseguire con l'analisi e produrre i file \emph{wiggle} e \emph{gnuplot} da visualizzare.
+
+Una volta suddivise le read per tipologia, vengono creati i relativi file \acronimo{bam} da utilizzare, in seguito, per calcolare le rispettive \emph{sequence coverage}, la \emph{physical coverage} e le \emph{insert length} per i \emph{mate pair}.
+
+Lo script, chiamato \script{reseq\_new}, è quindi composto da quattro funzioni che si occupano di svolgere diversi calcoli:
+
+\begin{description}
+\item[\textsc{esamina\_bam}]: funzione che si occupa di contare le occorrenze di ogni read, sfruttando il campo \campo{qname} e costruisce tre liste diverse a seconda che vengano trovate \emph{single read}, \emph{unique read} o \emph{multiple read}.
+
+Una volta costruite le liste, vengono creati i rispettivi file \acronimo{bam} e salvati su disco per poter essere utilizzati in seguito.
+
+\item[\textsc{esamina\_multiple}]: funzione che si occupa di esaminare le \emph{multiple read} trovate e di suddividerle ulteriormente cercando di trovare ulteriori \emph{mate pair} validi.
+
+Questa funzione cerca di sfruttare alcune caratteristiche delle read per trovare i giusti accoppiamenti: esiste però una grande variabilità di condizioni che permettono di scegliere quali read accoppiare ed è quindi complicato elaborare un algoritmo che svolga questo compito al meglio.
+
+\item[\textsc{calcola\_insert\_length}]: funzione che calcola la lunghezza degli inserti, e quindi delle sole \emph{unique read}, scartando quelli con lunghezza molto superiore alla loro media ($20000bp$).
+
+Viene inoltre calcolata la \emph{physical coverage} dei \emph{mate pair}: i campi relativi al file \acronimo{bam} che vengono usati sono \campo{pos} e \campo{seq} sfruttando i metodi offerti da \emph{pysam}.
+
+Durante il calcolo vengono create diverse liste che verranno usate per scrivere i dati su file \emph{wiggle} e \emph{gnuplot}; tali file saranno poi usati per creare dei grafici che mostrano i risultati di questa elaborazione.
+
+Al termine del calcolo vengono fornite la media e la deviazione standard delle lunghezze.
+
+\item[\textsc{calcola\_coverage}]: funzione che calcola la \emph{sequence coverage} delle read sfruttando i metodi offerti dal modulo \emph{pysam} e scrive i file \emph{wiggle} da utilizzare per la visualizzazione dei risultati.
+\end{description}
+
+Sono stati sviluppati inoltre due moduli ausiliari che si occupano di compiti diversi:
+\begin{description}
+\item[\textsc{reseq\_stampa}]: modulo che effettua la creazione e la scrittura dei file \emph{wiggle}, \acronimo{bam} e \emph{gnuplot} e la stampa su terminale di messaggi riguardanti l'avanzamento del programma;
+
+\item[\textsc{reseq\_utility}]: modulo che contiene alcune funzioni di utilità che vengono usate durante l'analisi dei dati.
+\end{description}
+
+\subsection{Script \emph{Gnuplot}}
+Per la stampa di dei grafici riguardanti la lunghezza degli inserti è stato creato uno script, chiamato \script{plot}, che viene letto ed eseguito da \emph{Gnuplot} e produce alcuni file \acronimo{PDF} che riportano sull'asse delle ascisse il numero progressivo degli inserti trovati, mentre sull'asse delle ordinate la lunghezza, in $bp$, degli stessi inserti.
+
+\subsection{Script \emph{bash}}
+\label{sec:bash}
+Affinché l'esecuzione dell'intero processo di elaborazione dei dati e produzione dei risultati sia semplice da eseguire ho realizzato un script \emph{bash} che rende tale procedura automatica.
+Tale script si occupa di eseguire in sequenza tutte le operazioni necessarie:
+
+\begin{description}
+\item[\textsc{Unione file pass}]: effettua il merge dei file \acronimo{pass} ricevuti; crea una versione ordinata per nome una per posizione di partenza della read sul genoma;
+\item[\textsc{Avvio script Python}]: richiama lo script \script{reseq\_new} che effettua l'analisi dei dati;
+\item[\textsc{Conversione file bam}]: converte i file \acronimo{bam} in file \acronimo{sam} per una più agevole lettura ad occhio umano;
+\item[\textsc{Conversione file wiggle}]: converte i file \emph{wiggle} in \acronimo{tdf} in modo da poterli utilizzare con \acronimo{igv};
+\item[\textsc{Avvio Gnuplot}]: richiama \emph{Gnuplot} per realizzare i grafici relativi alle \emph{insert length}.
+\end{description}
+
+
+

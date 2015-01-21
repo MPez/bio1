@@ -5,10 +5,12 @@
 import pysam
 import re
 
+# cartella di destinazione dei file pass bam forniti
+bam_dir = None
 # riferimenti ai nomi dei file bam
-bam_file_name1 = "pass_bam/pass_reads1_sorted_name.bam"
-bam_file_name2 = "pass_bam/pass_reads2_sorted_name.bam"
-bam_file_all = "pass_bam/pass_reads_all_sorted_name.bam"
+bam_file_name1 = "pass_reads1_sorted_name.bam"
+bam_file_name2 = "pass_reads2_sorted_name.bam"
+bam_file_all = "pass_reads_all_sorted_name.bam"
 unique_file = "unique_reads.bam"
 single_file = "single_reads.bam"
 multiple_file = "multiple_reads.bam"
@@ -22,11 +24,11 @@ def apri_bam_file(name):
 
     Ritorna l'oggetto che corrisponde al file bam."""
     if name == 1:
-        return pysam.AlignmentFile(bam_file_name1, "rb")
+        return pysam.AlignmentFile(bam_dir + bam_file_name1, "rb")
     elif name == 2:
-        return pysam.AlignmentFile(bam_file_name2, "rb")
+        return pysam.AlignmentFile(bam_dir + bam_file_name2, "rb")
     elif name == "all":
-        return pysam.AlignmentFile(bam_file_all, "rb")
+        return pysam.AlignmentFile(bam_dir + bam_file_all, "rb")
     elif name == "single":
         return pysam.AlignmentFile(single_file, "rb")
     elif name == "unique":
