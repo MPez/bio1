@@ -1,12 +1,23 @@
+# file di allineamento e sequenziazione
 *.fastq
 *.bam
 *.bai
 *.sam
-*.log
 *.fasta
 *.fai
 *.tdf
 *.wig
+
+# file generici
+*.log
 *.readme
 *.txt
 *.pdf
+
+# file relativi alla compilazione latex
+*.aux
+*.fls
+*.lof
+*.lot
+*.out
+*.toc

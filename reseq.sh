@@ -72,7 +72,7 @@ sort_bam() {
 wig_to_tdf() {
     suff="wig"
     SUFF="tdf"
-    genome="reference_A_laidlawii/reference_A_laidlawii.fasta.fai"
+    genome="../reference_A_laidlawii/reference_A_laidlawii.fasta.fai"
 
     echo "Creazione file tdf"
     cd $ris_dir

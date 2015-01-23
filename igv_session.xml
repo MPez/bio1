@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<Session genome="/run/media/marco/Dati/00_Marco/01_UNIVERSITA/Padova/informatica/Magistrale/Bionformatica - Valle/progetto/bio1/reference_A_laidlawii/reference_A_laidlawii.fasta" hasGeneTrack="false" hasSequenceTrack="true" locus="Chromosome:1-1496992" version="8">
+<Session genome="/run/media/marco/Dati/00_Marco/01_UNIVERSITA/Padova/informatica/Magistrale/Bionformatica - Valle/progetto/bio1/reference_A_laidlawii/reference_A_laidlawii.fasta" hasGeneTrack="false" hasSequenceTrack="true" locus="Chromosome:44517-91631" version="8">
     <Resources>
-        <Resource path="/run/media/marco/Dati/00_Marco/01_UNIVERSITA/Padova/informatica/Magistrale/Bionformatica - Valle/progetto/bio1/risultati/unique_sorted.wig.tdf"/>
-        <Resource path="/run/media/marco/Dati/00_Marco/01_UNIVERSITA/Padova/informatica/Magistrale/Bionformatica - Valle/progetto/bio1/risultati/multiple_sorted.wig.tdf"/>
-        <Resource path="/run/media/marco/Dati/00_Marco/01_UNIVERSITA/Padova/informatica/Magistrale/Bionformatica - Valle/progetto/bio1/risultati/single_sorted.wig.tdf"/>
-        <Resource path="/run/media/marco/Dati/00_Marco/01_UNIVERSITA/Padova/informatica/Magistrale/Bionformatica - Valle/progetto/bio1/risultati/unique_physical_coverage.wig.tdf"/>
-        <Resource path="/run/media/marco/Dati/00_Marco/01_UNIVERSITA/Padova/informatica/Magistrale/Bionformatica - Valle/progetto/bio1/risultati/discarded_insert_length_coverage.wig.tdf"/>
-        <Resource path="/run/media/marco/Dati/00_Marco/01_UNIVERSITA/Padova/informatica/Magistrale/Bionformatica - Valle/progetto/bio1/risultati/insert_length_coverage.wig.tdf"/>
+        <Resource path="/run/media/marco/Dati/00_Marco/01_UNIVERSITA/Padova/informatica/Magistrale/Bionformatica - Valle/progetto/bio1/risultati/discarded-insert-length_coverage.wig.tdf"/>
+        <Resource path="/run/media/marco/Dati/00_Marco/01_UNIVERSITA/Padova/informatica/Magistrale/Bionformatica - Valle/progetto/bio1/risultati/unique-physical_coverage.wig.tdf"/>
+        <Resource path="/run/media/marco/Dati/00_Marco/01_UNIVERSITA/Padova/informatica/Magistrale/Bionformatica - Valle/progetto/bio1/risultati/insert-length_coverage.wig.tdf"/>
+        <Resource path="/run/media/marco/Dati/00_Marco/01_UNIVERSITA/Padova/informatica/Magistrale/Bionformatica - Valle/progetto/bio1/risultati/multiple_coverage.wig.tdf"/>
+        <Resource path="/run/media/marco/Dati/00_Marco/01_UNIVERSITA/Padova/informatica/Magistrale/Bionformatica - Valle/progetto/bio1/risultati/unique_coverage.wig.tdf"/>
+        <Resource path="/run/media/marco/Dati/00_Marco/01_UNIVERSITA/Padova/informatica/Magistrale/Bionformatica - Valle/progetto/bio1/risultati/single_coverage.wig.tdf"/>
     </Resources>
-    <Panel height="754" name="DataPanel" width="1381">
-        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" height="80" id="/run/media/marco/Dati/00_Marco/01_UNIVERSITA/Padova/informatica/Magistrale/Bionformatica - Valle/progetto/bio1/risultati/unique_sorted.wig.tdf" name="unique_sorted.wig.tdf" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
-            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="58.201527" minimum="0.0" type="LINEAR"/>
+    <Panel height="592" name="DataPanel" width="1581">
+        <Track altColor="0,0,178" autoScale="true" clazz="org.broad.igv.track.DataSourceTrack" color="0,153,51" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" height="95" id="/run/media/marco/Dati/00_Marco/01_UNIVERSITA/Padova/informatica/Magistrale/Bionformatica - Valle/progetto/bio1/risultati/unique_coverage.wig.tdf" name="Unique sequence coverage" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="65.37143" minimum="0.0" type="LINEAR"/>
         </Track>
-        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" height="80" id="/run/media/marco/Dati/00_Marco/01_UNIVERSITA/Padova/informatica/Magistrale/Bionformatica - Valle/progetto/bio1/risultati/single_sorted.wig.tdf" name="single_sorted.wig.tdf" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
-            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="21.90527" minimum="0.0" type="LINEAR"/>
+        <Track altColor="0,0,178" autoScale="true" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" height="95" id="/run/media/marco/Dati/00_Marco/01_UNIVERSITA/Padova/informatica/Magistrale/Bionformatica - Valle/progetto/bio1/risultati/single_coverage.wig.tdf" name="Single sequence coverage" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="16.4" minimum="0.0" type="LINEAR"/>
         </Track>
-        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" height="80" id="/run/media/marco/Dati/00_Marco/01_UNIVERSITA/Padova/informatica/Magistrale/Bionformatica - Valle/progetto/bio1/risultati/multiple_sorted.wig.tdf" name="multiple_sorted.wig.tdf" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
-            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="100.0" minimum="0.0" type="LINEAR"/>
+        <Track altColor="0,0,178" autoScale="true" clazz="org.broad.igv.track.DataSourceTrack" color="204,0,0" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" height="96" id="/run/media/marco/Dati/00_Marco/01_UNIVERSITA/Padova/informatica/Magistrale/Bionformatica - Valle/progetto/bio1/risultati/multiple_coverage.wig.tdf" name="Multiple sequence coverage" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="111.71429" minimum="0.0" type="LINEAR"/>
         </Track>
-        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" height="80" id="/run/media/marco/Dati/00_Marco/01_UNIVERSITA/Padova/informatica/Magistrale/Bionformatica - Valle/progetto/bio1/risultati/unique_physical_coverage.wig.tdf" name="unique_physical_coverage.wig.tdf" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
-            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="2162.6587" minimum="0.0" type="LINEAR"/>
+        <Track altColor="0,0,178" autoScale="true" clazz="org.broad.igv.track.DataSourceTrack" color="0,153,51" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" height="95" id="/run/media/marco/Dati/00_Marco/01_UNIVERSITA/Padova/informatica/Magistrale/Bionformatica - Valle/progetto/bio1/risultati/unique-physical_coverage.wig.tdf" name="Unique physical coverage" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="649.2647" minimum="0.0" type="LINEAR"/>
         </Track>
-        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" height="80" id="/run/media/marco/Dati/00_Marco/01_UNIVERSITA/Padova/informatica/Magistrale/Bionformatica - Valle/progetto/bio1/risultati/insert_length_coverage.wig.tdf" name="insert_length_coverage.wig.tdf" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
-            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="8548.125" minimum="0.0" type="LINEAR"/>
+        <Track altColor="0,0,178" autoScale="true" clazz="org.broad.igv.track.DataSourceTrack" color="0,153,51" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" height="95" id="/run/media/marco/Dati/00_Marco/01_UNIVERSITA/Padova/informatica/Magistrale/Bionformatica - Valle/progetto/bio1/risultati/insert-length_coverage.wig.tdf" name="Avgerage insert length" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="3502.0" minimum="0.0" type="LINEAR"/>
         </Track>
-        <Track altColor="0,0,178" autoScale="false" clazz="org.broad.igv.track.DataSourceTrack" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" height="80" id="/run/media/marco/Dati/00_Marco/01_UNIVERSITA/Padova/informatica/Magistrale/Bionformatica - Valle/progetto/bio1/risultati/discarded_insert_length_coverage.wig.tdf" name="discarded_insert_length_coverage.wig.tdf" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
-            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="45111.04" minimum="0.0" type="LINEAR"/>
+        <Track altColor="0,0,178" autoScale="true" clazz="org.broad.igv.track.DataSourceTrack" color="0,153,51" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" height="96" id="/run/media/marco/Dati/00_Marco/01_UNIVERSITA/Padova/informatica/Magistrale/Bionformatica - Valle/progetto/bio1/risultati/discarded-insert-length_coverage.wig.tdf" name="Average discarded insert length" normalize="false" renderer="BAR_CHART" sortable="true" visible="true" windowFunction="mean">
+            <DataRange baseline="0.0" drawBaseline="true" flipAxis="false" maximum="1134777.0" minimum="0.0" type="LINEAR"/>
         </Track>
     </Panel>
-    <Panel height="58" name="FeaturePanel" width="1381">
-        <Track altColor="0,0,178" autoScale="false" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" id="Reference sequence" name="Reference sequence" sortable="false" visible="true"/>
+    <Panel height="35" name="FeaturePanel" width="1581">
+        <Track altColor="0,0,178" autoScale="false" color="0,0,178" displayMode="COLLAPSED" featureVisibilityWindow="-1" fontSize="10" height="15" id="Reference sequence" name="Reference sequence" sortable="false" visible="true"/>
     </Panel>
-    <PanelLayout dividerFractions="0.9230769230769231"/>
+    <PanelLayout dividerFractions="0.9369085173501577"/>
     <HiddenAttributes>
         <Attribute name="NAME"/>
         <Attribute name="DATA FILE"/>

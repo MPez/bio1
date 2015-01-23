@@ -30,6 +30,8 @@ def set_bam_dir(dir):
 
 
 def chiama_reseq():
+    """Richiama lo script bash reseq ed esegue il sort dei file bam creati.
+    """
     os.system("bash reseq.sh -t")
 
 
