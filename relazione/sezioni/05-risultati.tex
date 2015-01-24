@@ -108,4 +108,81 @@ La situazione rappresentata in figura \ref{fig:regione 7} è una chiara evidenza
 \label{fig:regioni 11}
 \end{figure}
 
-L'immagine in figura \ref{fig:regioni 11} presenta invece un aspetto per me insolito in quanto presenta una forma a \emph{V} rovesciata in concomitanza di aumenti sensibili e simmetrici della lunghezza media degli inserti.
+L'immagine in figura \ref{fig:regioni 11} presenta invece un aspetto per me insolito in quanto si evidenzia una forma a \emph{V} rovesciata in concomitanza di aumenti sensibili e simmetrici della lunghezza media degli inserti.
+
+Per approfondire lo studio di questa area potrebbe essere interessante capire l'orientamento degli inserti per comprendere se può essere presente un'inversione.
+
+\subsection{Analisi \emph{multiple read}}
+Per quanto riguarda le \emph{multiple read} ho cercato un modo per effettuare un'analisi su di esse ma è risultata essere poco preciso in quanto è presente una notevole variabilità di caratteristiche tra le read.
+
+Osservando a campione le read presenti nei file \acronimo{sam}, ho notato che tra i gruppi di tre e quattro read ci sono \emph{mate pair} che sono compatibili ma non sono riuscito a trovare dei criteri per sviluppare un algoritmo che riusca a discriminare bene ogni caso.
+
+In particolare ho notato che in molti casi nei gruppi di tre read, due sono ad una distanza coerente con la media delle \emph{unique read}, mentre la terza è ad una distanza comparabile con quella degli inserti scartati perchè fuori range, questo si nota bene nelle figure \ref{fig:regioni 2 e 9} e \ref{fig:regioni 6 e 8}.
+
+Invece nei gruppi di quattro read si potrebbero trovare due coppie di \emph{mate pair} con distanza compatibile anche se poste in due zone diverse del genoma a distanza molto elevata tra loro.
+
+\subsection{Analisi \emph{unique read}}
+Per lo studio delle \emph{unique read} ho effettuato un'analisi sulla loro lunghezza e ho prodotto una serie di grafici.
+
+\begin{figure}[htbp]
+\centering
+\subfloat[][\emph{Grafico 1}]
+	{\includegraphics[width=.45\textwidth]{immagini/insert_length1.pdf}} \quad
+\subfloat[][\emph{Grafico 2}]
+	{\includegraphics[width=.45\textwidth]{immagini/insert_length1-1.pdf}} \\
+\caption{Grafici relativi alla lunghezza degli inserti}
+\end{figure}
+\begin{figure}[htbp]
+\ContinuedFloat
+\centering
+\subfloat[][\emph{Grafico 3}]
+	{\includegraphics[width=.45\textwidth]{immagini/insert_length2.pdf}} \\
+\caption{Grafici relativi alla lunghezza degli inserti}
+\end{figure}
+\begin{figure}[htbp]
+\ContinuedFloat
+\centering
+\subfloat[][\emph{Grafico 4}]
+	{\includegraphics[width=.45\textwidth]{immagini/insert_length3.pdf}} \quad
+\subfloat[][\emph{Grafico 5}]
+	{\includegraphics[width=.45\textwidth]{immagini/insert_length3-1.pdf}} \\
+\caption{Grafici relativi alla lunghezza degli inserti}
+\end{figure}
+\begin{figure}[htbp]
+\ContinuedFloat
+\centering
+\subfloat[][\emph{Grafico 6}]
+	{\includegraphics[width=.45\textwidth]{immagini/insert_length4.pdf}} \quad
+\subfloat[][\emph{Grafico 7}]
+	{\includegraphics[width=.45\textwidth]{immagini/insert_length4-1.pdf}} \\
+\caption{Grafici relativi alla lunghezza degli inserti}
+\end{figure}
+\begin{figure}[htbp]
+\ContinuedFloat
+\centering
+\subfloat[][\emph{Grafico 8}]
+	{\includegraphics[width=.45\textwidth]{immagini/insert_length5.pdf}} \\
+\caption{Grafici relativi alla lunghezza degli inserti}
+\end{figure}
+\begin{figure}[htbp]
+\ContinuedFloat
+\centering
+\subfloat[][\emph{Grafico 9}]
+	{\includegraphics[width=.45\textwidth]{immagini/insert_length6.pdf}} \quad
+\subfloat[][\emph{Grafico 10}]
+	{\includegraphics[width=.45\textwidth]{immagini/insert_length6-1.pdf}} \\
+\caption{Grafici relativi alla lunghezza degli inserti}
+\end{figure}
+\begin{figure}[htbp]
+\ContinuedFloat
+\centering
+\subfloat[][\emph{Grafico 11}]
+	{\includegraphics[width=.45\textwidth]{immagini/insert_length7.pdf}} \\
+\caption{Grafici relativi alla lunghezza degli inserti}
+\end{figure}
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=.45\textwidth]{immagini/discarded_insert_length.pdf}
+\caption{Grafici relativi alla lunghezza degli inserti scartati}
+\label{fig:discarded insert length}
+\end{figure}
