@@ -50,7 +50,7 @@ merge_pass_sort() {
     cd ..
 }
 
-# ordina i file pass creati e crea l'indice
+# ordina i file bam creati e crea l'indice
 sort_bam() {
     suff=".bam"
     unique="unique_reads"

@@ -1,4 +1,4 @@
-\clearpage
+%\clearpage
 \section{Sviluppo}
 Prima di iniziare lo sviluppo del programma ho avuto la necessità di approfondire lo studio del formato \acronimo{bam/sam} per comprendere come sfruttare al meglio la struttura del file stesso e delle librerie che aiutano l'estrazione dei dati: ciò è stato necessario, in quanto tale formato di file presenta molti campi per ogni read e solo alcuni di essi sono risultati essere davvero utili agli scopi del progetto.
 
@@ -59,6 +59,7 @@ Tale script si occupa di eseguire in sequenza tutte le operazioni necessarie:
 \item[\textsc{Unione file pass}]: effettua il merge dei file \acronimo{pass} ricevuti; crea una versione ordinata per nome una per posizione di partenza della read sul genoma;
 \item[\textsc{Avvio script Python}]: richiama lo script \script{reseq\_new} che effettua l'analisi dei dati;
 \item[\textsc{Conversione file bam}]: converte i file \acronimo{bam} in file \acronimo{sam} per una più agevole lettura ad occhio umano;
+\item[\textsc{Ordinamento file bam}]: ordina i file \acronimo{bam} creati durante l'esecuzione del programma per consentire di poter effettuare su di essi ulteriori analisi;
 \item[\textsc{Conversione file wiggle}]: converte i file \emph{wiggle} in \acronimo{tdf} in modo da poterli utilizzare con \acronimo{igv};
 \item[\textsc{Avvio Gnuplot}]: richiama \emph{Gnuplot} per realizzare i grafici relativi alle \emph{insert length}.
 \end{description}
