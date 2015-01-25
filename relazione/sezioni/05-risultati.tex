@@ -1,7 +1,7 @@
 %\clearpage
 \section{Risultati}
 \label{sec:risultati}
-Il programma sviluppato ha permesso di produrre numerosi risultati utili con quali sono state create le seguenti tracce per \acronimo{igv}:
+Il programma sviluppato ha permesso di produrre numerosi risultati utili con i quali sono state create le seguenti tracce per \acronimo{igv}:
 \begin{description}
 \item[\textsc{Unique sequence coverage}]: rappresenta la \emph{sequence coverage} delle \emph{unique read} trovate; i valori sono compresi tra $1$ e $80$;
 \item[\textsc{Single sequence coverage}]: rappresenta la \emph{sequence coverage} delle \emph{single read} trovate; i valori sono compresi tra $1$ e $38$;
@@ -137,9 +137,9 @@ L'immagine in figura \ref{fig:regioni 11} presenta invece un aspetto per me inso
 Per approfondire lo studio di questa area potrebbe essere interessante capire l'orientamento degli inserti per comprendere se può essere presente un'inversione.
 
 \subsection{Analisi \emph{multiple read}}
-Per quanto riguarda le \emph{multiple read} ho cercato un modo per effettuare un'analisi su di esse ma è risultata essere poco preciso in quanto è presente una notevole variabilità di caratteristiche tra le read.
+Per quanto riguarda le \emph{multiple read} ho cercato un modo per effettuare un'analisi su di esse ma è risultato essere poco preciso in quanto è presente una notevole variabilità di caratteristiche tra le read.
 
-Osservando a campione le read presenti nei file \acronimo{sam}, ho notato che tra i gruppi di tre e quattro read ci sono \emph{mate pair} che sono compatibili ma non sono riuscito a trovare dei criteri per sviluppare un algoritmo che riusca a discriminare bene ogni caso.
+Osservando a campione le read presenti nei file \acronimo{sam}, ho notato che tra i gruppi di tre e quattro read ci sono \emph{mate pair} che sono compatibili ma non sono riuscito a trovare dei criteri per sviluppare un algoritmo che riesca a discriminare bene ogni caso.
 
 In particolare ho notato che in molti casi nei gruppi di tre read, due sono ad una distanza coerente con la media delle \emph{unique read}, mentre la terza è ad una distanza comparabile con quella degli inserti scartati perchè fuori range, questo si nota bene nelle figure \ref{fig:regioni 2 e 9} e \ref{fig:regioni 6 e 8}.
 
@@ -242,6 +242,7 @@ In figura \ref{fig:grafico 6} invece si nota un aumento della lunghezza degli in
 \end{figure}
 
 I grafici nelle figure \ref{fig:grafico 9} e \ref{fig:grafico 10} presentano anch'esse un aumento della lunghezza di alcuni inserti ma in questo caso la variazione è superiore che nei casi esaminati in precedenza.
+Tutti gli altri grafici invece non presentano variazioni anomale tali da essere analizzate.
 
 \begin{figure}[htbp]
 	\ContinuedFloat

@@ -3,16 +3,16 @@
 L'esecuzione del programma è gestita mediante lo script \emph{bash} chiamato \script{reseq}; tale script è stato dotato di diverse opzioni che permettono di eseguire il programma con diverse modalità richiamabili tramite gli appositi flag:
 
 \begin{description}
-\item[\texttt{-a arg}]: modalità \modo{all}, esegue in sequenza tutte le operazioni descritte nella sezione \ref{sec:bash} e comprende tutte le altre modalità di esecuzione; permette quindi di eseguire l'intero programma ed ottenere tutti i risultati; l'argomento \texttt{arg} è necessario per eseguire la modalità \modo{bam to sam};
+\item[\texttt{-a arg}]: modalità \modo{all}, esegue in sequenza tutte le operazioni descritte nella sezione \ref{sec:bash} e comprende tutte le altre modalità di esecuzione; permette quindi di eseguire l'intero programma ed ottenere tutti i risultati; l'argomento \texttt{arg} è necessario per eseguire la modalità \modo{bam to sam} e quela \modo{start reseq};
 \item[\texttt{-b arg}]: modalità \modo{bam to sam}, effettua la conversione di tutti i file \acronimo{bam} presenti nella cartella passata come argomento \texttt{arg} in file \acronimo{sam}, consentendo la visualizzazione all'utente;
 \item[\texttt{-g}]: modalità \modo{gnuplot}, richiama \emph{gnuplot} per disegnare i grafici sulla lunghezza degli inserti;
 \item[\texttt{-m}]: modalità \modo{merge pass sort}, esegue l'unione dei file \acronimo{pass} forniti, crea una versione ordinata per nome e una per posizione;
-\item[\texttt{-s}]: modalità \modo{start reseq}, avvia lo script \emph{Python} che esegue l'elaborazione dei dati;
+\item[\texttt{-s arg}]: modalità \modo{start reseq}, avvia lo script \emph{Python} che esegue l'elaborazione dei dati utilizzando i file \acronimo{bam} di partenza presenti nella cartella passata tramite argomento \texttt{arg};
 \item[\texttt{-t}]: modalità \modo{sort bam}, esegue l'ordinamento dei file \acronimo{bam} creati in precedenza e situati nella cartella \texttt{risultati} e crea il relativo indice;
 \item[\texttt{-w}]: modalità \modo{wig to tdf}, converte i file \emph{wiggle} creati in file \acronimo{tdf}, pronti per essere visualizzati su \acronimo{igv}.
 \end{description}
 
-Affinché l'esecuzione del programma non provochi errori è necessario che la struttura di file sia coerente con quella usata nell'ambiente di sviluppo; insieme alla presente relazione viene fornito un archivio contenente tutti i file sviluppati necessari al funzionamento, non vengono però inclusi quelli relativi ai file \acronimo{pass} di riferimento e al genoma di \emph{A. laidlawii}.
+Affinché l'esecuzione del programma non provochi errori è necessario che la struttura di file sia coerente con quella usata nell'ambiente di sviluppo; insieme alla presente relazione viene fornito un archivio contenente tutti i file sviluppati necessari al funzionamento, non vengono però inclusi quelli relativi ai file \acronimo{pass} di riferimento e al genoma di \emph{A. laidlawii} a causa della loro dimensioni.
 
 Una volta estratto l'archivio in una destinazione a piacere è necessario quindi copiare i file richiesti nelle cartelle corrette; qui di seguito viene descritta la loro struttura nell'ambiente di sviluppo:\\*
 

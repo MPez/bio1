@@ -37,7 +37,7 @@ Durante il calcolo vengono create diverse liste che verranno usate per scrivere 
 
 Al termine del calcolo vengono fornite la media e la deviazione standard delle lunghezze.
 
-\item[\textsc{calcola\_coverage}]: funzione che calcola la \emph{sequence coverage} delle read sfruttando i metodi offerti dal modulo \emph{pysam} e scrive i file \emph{wiggle} da utilizzare per la visualizzazione dei risultati.
+\item[\textsc{calcola\_coverage}]: funzione che calcola la \emph{sequence coverage} delle read, sfruttando i metodi offerti dal modulo \emph{pysam}, e scrive i file \emph{wiggle} da utilizzare per la visualizzazione dei risultati.
 \end{description}
 
 Sono stati sviluppati inoltre due moduli ausiliari che si occupano di compiti diversi:
@@ -48,15 +48,15 @@ Sono stati sviluppati inoltre due moduli ausiliari che si occupano di compiti di
 \end{description}
 
 \subsection{Script \emph{Gnuplot}}
-Per la stampa di dei grafici riguardanti la lunghezza degli inserti è stato creato uno script, chiamato \script{plot}, che viene letto ed eseguito da \emph{Gnuplot} e produce alcuni file \acronimo{PDF} che riportano sull'asse delle ascisse il numero progressivo degli inserti trovati, mentre sull'asse delle ordinate la lunghezza, in $bp$, degli stessi inserti.
+Per la stampa dei grafici riguardanti la lunghezza degli inserti è stato creato uno script, chiamato \script{plot}, che viene letto ed eseguito da \emph{Gnuplot}; esso produce alcuni file \acronimo{PDF} che riportano sull'asse delle ascisse il numero progressivo degli inserti trovati, mentre sull'asse delle ordinate la lunghezza, in $bp$, degli stessi inserti.
 
-\subsection{Script \emph{bash}}
+\subsection{Script \emph{Bash}}
 \label{sec:bash}
 Affinché l'esecuzione dell'intero processo di elaborazione dei dati e produzione dei risultati sia semplice da eseguire ho realizzato un script \emph{bash} che rende tale procedura automatica.
 Tale script si occupa di eseguire in sequenza tutte le operazioni necessarie:
 
 \begin{description}
-\item[\textsc{Unione file pass}]: effettua il merge dei file \acronimo{pass} ricevuti; crea una versione ordinata per nome una per posizione di partenza della read sul genoma;
+\item[\textsc{Unione file pass}]: effettua il merge dei file \acronimo{pass} ricevuti; crea una versione ordinata per nome e una per posizione di partenza della read sul genoma;
 \item[\textsc{Avvio script Python}]: richiama lo script \script{reseq\_new} che effettua l'analisi dei dati;
 \item[\textsc{Conversione file bam}]: converte i file \acronimo{bam} in file \acronimo{sam} per una più agevole lettura ad occhio umano;
 \item[\textsc{Ordinamento file bam}]: ordina i file \acronimo{bam} creati durante l'esecuzione del programma per consentire di poter effettuare su di essi ulteriori analisi;
