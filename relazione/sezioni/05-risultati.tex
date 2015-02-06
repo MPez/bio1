@@ -6,8 +6,8 @@ Il programma sviluppato ha permesso di produrre numerosi risultati utili con i q
 \item[\textsc{Unique sequence coverage}]: rappresenta la \emph{sequence coverage} delle \emph{unique read} trovate; i valori sono compresi tra $1$ e $80$;
 \item[\textsc{Single sequence coverage}]: rappresenta la \emph{sequence coverage} delle \emph{single read} trovate; i valori sono compresi tra $1$ e $38$;
 \item[\textsc{Multiple sequence coverage}]: rappresenta la \emph{sequence coverage} delle \emph{multiple read} trovate; i valori sono compresi tra $1$ e $118$;
-\item[\textsc{Unique physical coverage}]: rappresenta la \emph{physical coverage} delle \emph{unique read} trovate; i valori sono compresa tra $1$ e $1386$;
-\item[\textsc{Average insert length}]: rappresenta la lunghezza media degli inserti che iniziano in una certa posizione; la lunghezza media è uguale $2617 bp$ con una deviazione standard di $483 bp$;
+\item[\textsc{Unique physical coverage}]: rappresenta la \emph{physical coverage} delle \emph{unique read} trovate; i valori sono compresi tra $1$ e $1386$;
+\item[\textsc{Average insert length}]: rappresenta la lunghezza media degli inserti che iniziano in una certa posizione; la lunghezza media è di $2617 bp$ con una deviazione standard di $483 bp$;
 \item[\textsc{Average discarded insert length}]: rappresenta la lunghezza media degli inserti che sono stati scartati in quanto fuori range; la soglia massima è stata scelta sfruttando i dati sulla lunghezza dei singoli inserti comparata con la loro media: è stato scelto un valore di $20000 bp$ in quanto ritenuto sufficientemente alto da non influire sui risultati.
 \end{description}
 
@@ -25,7 +25,7 @@ La figura \ref{fig:igv globale} rappresenta le tracce appena descritte, i colori
 \item[\textsc{Rosso}]: identifica le tracce associate alle \emph{multiple read}.
 \end{description}
 
-Dai grafici si può notare come siano presenti diverse regioni interessanti all'interno delle tracce: sono quelle dove si vedono dei picchi in alcune di esse e avvallamenti nelle altre.
+Dai grafici si può notare come siano presenti diverse regioni interessanti all'interno delle tracce: sono quelle dove si vedono dei picchi e degli avvallamenti.
 
 Le aree che a mio parere sono quelle più interessanti da valutare sono riquadrate con un rettangolo di colore giallo e per meglio identificarle sono numerate in ordine crescente.
 Nel seguito verranno analizzate tali zone ed evidenziati i loro aspetti peculiari dando delle considerazioni sul possibile significato di variazione dei valori medi.
@@ -65,7 +65,7 @@ In figura \ref{fig:regioni 1 e 4} si può notare come entrambe le regioni presen
 \label{fig:regioni 2 e 9}
 \end{figure}
 
-Le immagini in figura \ref{fig:regioni 2 e 9} denotano la presenza di una notevole quantità di \emph{multiple read} che si sovrappone alla drastica diminuzione sia della \emph{physical} che della \emph{sequence coverage}.
+Le immagini in figura \ref{fig:regioni 2 e 9} denotano la presenza di una notevole quantità di \emph{multiple read} che si sovrappone alla drastica diminuzione sia della \emph{physical coverage} che della \emph{sequence coverage}.
 Inoltre si può vedere come la lunghezza media degli inserti sia molto elevata.
 
 Questi dati sono difficili da interpretare in quanto vi sarebbe la necessità di approfondire lo studio delle \emph{multiple read} per capire meglio le loro caratteristiche e individuare ulteriori \emph{mate pair}, se presenti.
@@ -86,7 +86,7 @@ Questi dati sono difficili da interpretare in quanto vi sarebbe la necessità di
 \label{fig:regioni 6 e 8}
 \end{figure}
 
-Le regioni in figura \ref{fig:regioni 6 e 8} presentano caratteristiche simili a quelle in \ref{fig:regioni 2 e 9} ma si distinguono in quanto presentano due brevi picchi di \emph{multiple read} distinti che comportano una diminuzione nella \emph{sequence coverage} delle \emph{unique read} e nella \emph{physical coverage}.
+Le regioni in figura \ref{fig:regioni 6 e 8} presentano caratteristiche simili a quelle in figura \ref{fig:regioni 2 e 9} ma si distinguono in quanto presentano due brevi picchi di \emph{multiple read} distinti che comportano una diminuzione nella \emph{sequence coverage} delle \emph{unique read} e nella \emph{physical coverage}.
 
 Anche in questo caso l'unico modo di capire meglio la situazione è quello di indagare più approfonditamente le \emph{multiple read}.
 
@@ -263,4 +263,4 @@ Tutti gli altri grafici invece non presentano variazioni anomale tali da essere 
 
 L'ultimo grafico in figura \ref{fig:discarded insert length} evidenzia gli inserti con una lunghezza incompatibile che si attesta intorno alle $1100kbp$: sono stati trovati solamente $199$ inserti fuori range e sono quindi un numero davvero ristretto.
 
-Le variazioni nella lunghezza trovate nelle \emph{unique read} sono riscontrabili anche negli screenshot tratti da \acronimo{igv}: le diminuzioni e gli aumenti sono riconducibili rispettivamente a dei cali e degli incrementi nella \emph{physical coverage}.
+Le variazioni nella lunghezza trovate nelle \emph{unique read} sono riscontrabili anche negli screenshot tratti da \acronimo{igv}: le diminuzioni e gli aumenti sono riconducibili rispettivamente a dei cali e a degli incrementi nella \emph{physical coverage}.

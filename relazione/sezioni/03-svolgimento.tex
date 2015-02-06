@@ -31,7 +31,7 @@ Questa funzione cerca di sfruttare alcune caratteristiche delle read per trovare
 
 \item[\textsc{calcola\_insert\_length}]: funzione che calcola la lunghezza degli inserti, e quindi delle sole \emph{unique read}, scartando quelli con lunghezza molto superiore alla loro media ($20000bp$).
 
-Viene inoltre calcolata la \emph{physical coverage} dei \emph{mate pair}: i campi relativi al file \acronimo{bam} che vengono usati sono \campo{pos} e \campo{seq} sfruttando i metodi offerti da \emph{pysam}.
+Viene inoltre calcolata la \emph{physical coverage} dei \emph{mate pair}: i campi relativi al file \acronimo{bam} che vengono usati sono \campo{pos} e \campo{seq}, sfruttando i metodi offerti da \emph{pysam}.
 
 Durante il calcolo vengono create diverse liste che verranno usate per scrivere i dati su file \emph{wiggle} e \emph{gnuplot}; tali file saranno poi usati per creare dei grafici che mostrano i risultati di questa elaborazione.
 
@@ -52,7 +52,7 @@ Per la stampa dei grafici riguardanti la lunghezza degli inserti è stato creato
 
 \subsection{Script \emph{Bash}}
 \label{sec:bash}
-Affinché l'esecuzione dell'intero processo di elaborazione dei dati e produzione dei risultati sia semplice da eseguire ho realizzato un script \emph{bash} che rende tale procedura automatica.
+Affinché l'esecuzione dell'intero processo di elaborazione dei dati e produzione dei risultati sia semplice da eseguire, ho realizzato un script \emph{bash} che rende tale procedura automatica.
 Tale script si occupa di eseguire in sequenza tutte le operazioni necessarie:
 
 \begin{description}
