@@ -99,7 +99,7 @@ while getopts ":a:b:gms:tw" flag; do
             start_reseq $OPTARG
             bam_to_sam $OPTARG
             wig_to_tdf
-            gnuplot
+            plot
             ;;
         b ) bam_to_sam $OPTARG
             ;;
